@@ -1,21 +1,12 @@
 body {
   font-family: 'Open Sans', Arial, sans-serif;
-  padding: 2rem;
-  background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/16584/retina_wood.png');
   perspective: 1800px;
   perspective-origin: left center;
   margin: 0;
+  overflow: hidden;
 }
 
-.flex {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 3rem;
-}
-
-/* Base Book Setup */
+/* Single Book Container */
 .v-book {
   flex-shrink: 0;
   width: 15rem;
@@ -26,7 +17,7 @@ body {
   cursor: pointer;
 }
 
-/* Hover Effect: Turns 180 Degrees to Show the Back */
+/* Hover Effect: Rotates 180 Degrees to Show the Back */
 .v-book:hover {
   transform: translate3d(0, 0, 140px) rotate3d(0, 1, 0, 180deg);
 }
@@ -42,6 +33,7 @@ body {
   box-sizing: border-box;
 }
 
+/* Front Cover Setup */
 .v-book__cover.is-front {
   display: flex;
   justify-content: center;
@@ -50,19 +42,26 @@ body {
   transform: translate3d(0, 0, 5px);
   z-index: 10;
   border-radius: 1px 3px 2px 1px;
+  
+  /* ADD YOUR FRONT COVER IMAGE / GIF HERE */
+  background-image: url('front-cover.jpg'); 
 }
 
+/* Back Cover Setup */
 .v-book__cover.is-back {
   transform: rotate3d(0, 1, 0, -180deg) translate3d(0, 0, 6px);
   box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.25);
   border-radius: 3px 1px 2px 2px;
-  padding: 2rem;
+  
+  /* ADD YOUR BACK COVER IMAGE / GIF HERE */
+  background-image: url('back-cover.jpg'); 
 }
 
 .v-book:hover .v-book__cover.is-back {
   box-shadow: -30px 16px 40px rgba(0, 0, 0, 0.15);
 }
 
+/* Spine Setup */
 .v-book__spine {
   position: absolute;
   top: 0;
@@ -72,16 +71,3 @@ body {
   transform: rotate3d(0, 1, 0, -90deg);
   background-color: #ffffff;
 }
-
-/* Custom Cover Images for Each Book */
-.book-1 .is-front { background-image: url('cover1.jpg'); }
-.book-1 .is-back  { background-image: url('back1.jpg'); }
-
-.book-2 .is-front { background-image: url('cover2.jpg'); }
-.book-2 .is-back  { background-image: url('back2.jpg'); }
-
-.book-3 .is-front { background-image: url('cover3.jpg'); }
-.book-3 .is-back  { background-image: url('back3.jpg'); }
-
-.book-4 .is-front { background-image: url('cover4.jpg'); }
-.book-4 .is-back  { background-image: url('back4.jpg'); }
