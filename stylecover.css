@@ -1,61 +1,50 @@
-body {
-  font-family: 'Open Sans', Arial, sans-serif;
-  perspective: 1800px;
-  perspective-origin: left center;
+html, body {
+  height: 100%;
   margin: 0;
-  overflow: hidden;
+  padding: 0;
   background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
 
 .v-book {
-  flex-shrink: 0;
   width: 15rem;
-  height: 32rem;
+  height: 22rem;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 480ms ease-in-out;
   cursor: pointer;
 }
 
-/* Hover Effect: Turns 180 degrees */
 .v-book:hover {
-  transform: translate3d(0, 0, 140px) rotate3d(0, 1, 0, 180deg);
+  transform: translate3d(0, 0, 100px) rotate3d(0, 1, 0, 180deg);
 }
 
 .v-book__cover {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: #ffffff;
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
   box-sizing: border-box;
+  border: 1px solid #ccc;
+  background-size: cover;
+  background-position: center;
 }
 
-/* Front Cover */
+/* Temporary visible colors for testing */
 .v-book__cover.is-front {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform-origin: 0% 50%;
+  background-color: #2b5c8f; /* Blue Front Cover */
   transform: translate3d(0, 0, 5px);
   z-index: 10;
-  border-radius: 1px 3px 2px 1px;
 }
 
-/* Back Cover */
 .v-book__cover.is-back {
+  background-color: #e0e0e0; /* Grey Back Cover */
   transform: rotate3d(0, 1, 0, -180deg) translate3d(0, 0, 6px);
-  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.25);
-  border-radius: 3px 1px 2px 2px;
+  box-shadow: 3px 3px 15px rgba(0,0,0,0.2);
 }
 
-.v-book:hover .v-book__cover.is-back {
-  box-shadow: -30px 16px 40px rgba(0, 0, 0, 0.15);
-}
-
-/* Spine */
 .v-book__spine {
   position: absolute;
   top: 0;
@@ -63,5 +52,5 @@ body {
   width: 14px;
   height: 100%;
   transform: rotate3d(0, 1, 0, -90deg);
-  background-color: #ffffff;
+  background-color: #1a3a5c;
 }
