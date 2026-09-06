@@ -1,17 +1,16 @@
-html, body {
-  height: 100%;
+body {
+  font-family: 'Open Sans', Arial, sans-serif;
+  perspective: 1800px;
+  perspective-origin: left center;
   margin: 0;
-  padding: 0;
-  background: transparent;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   overflow: hidden;
+  background: transparent;
 }
 
 .v-book {
+  flex-shrink: 0;
   width: 15rem;
-  height: 22rem;
+  height: 32rem;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 480ms ease-in-out;
@@ -20,57 +19,40 @@ html, body {
 
 /* Hover Effect: Turns 180 degrees */
 .v-book:hover {
-  transform: translate3d(0, 0, 100px) rotate3d(0, 1, 0, 180deg);
+  transform: translate3d(0, 0, 140px) rotate3d(0, 1, 0, 180deg);
 }
 
 .v-book__cover {
   position: absolute;
   width: 100%;
   height: 100%;
-  box-sizing: border-box;
+  background-color: #ffffff;
+  background-position: center center;
   background-size: cover;
-  background-position: center;
   background-repeat: no-repeat;
+  box-sizing: border-box;
 }
 
 /* Front Cover */
 .v-book__cover.is-front {
-  background-color: #2b5c8f; /* Fallback color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-origin: 0% 50%;
   transform: translate3d(0, 0, 5px);
   z-index: 10;
   border-radius: 1px 3px 2px 1px;
 }
 
-/* Front Cover Crease Shadow (Spine Fold Effect) */
-.v-book__cover.is-front::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 12px;
-  height: 100%;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.25), transparent);
-  pointer-events: none;
-}
-
-/* Back Cover + Soft 45-Degree Fuzzy Outer Shadows */
+/* Back Cover */
 .v-book__cover.is-back {
-  background-color: #e0e0e0; /* Fallback color */
   transform: rotate3d(0, 1, 0, -180deg) translate3d(0, 0, 6px);
+  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.25);
   border-radius: 3px 1px 2px 2px;
-  transition: box-shadow 480ms ease-in-out;
-  
-  /* Resting State: Soft, diffuse shadow cast down-right at 45° */
-  box-shadow: 
-    15px 15px 35px rgba(0, 0, 0, 0.22),
-    5px 5px 12px rgba(0, 0, 0, 0.12);
 }
 
-/* Hovered State: Lifted, extra-fuzzy shadow cast down-left at 45° */
 .v-book:hover .v-book__cover.is-back {
-  box-shadow: 
-    -30px 30px 60px rgba(0, 0, 0, 0.28),
-    -10px 10px 25px rgba(0, 0, 0, 0.15);
+  box-shadow: -30px 16px 40px rgba(0, 0, 0, 0.15);
 }
 
 /* Spine */
@@ -81,5 +63,5 @@ html, body {
   width: 14px;
   height: 100%;
   transform: rotate3d(0, 1, 0, -90deg);
-  background-color: #1a3a5c;
+  background-color: #ffffff;
 }
