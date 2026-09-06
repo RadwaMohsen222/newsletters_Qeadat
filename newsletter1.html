@@ -14,7 +14,26 @@
   <link rel="stylesheet" href="newsletter1.css">
 </head>
 <body>
+<!-- 1. Include jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+  <!-- 2. Include turn.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
+
+  <!-- 3. Initialize Turn.js on your flipbook container -->
+  <script>
+    $(document).ready(function() {
+      // Make sure the selector matches your HTML flipbook wrapper
+      $('.ui-flipbook').turn({
+        width: 1000,       // Total spread width in px
+        height: 600,       // Total height in px
+        autoCenter: true,
+        duration: 1000     // Flip speed in ms
+      });
+    });
+  </script>
+</body>
+</html>
   <div class="catalog-app">
     <div id="viewer">
       <div id="flipbook" class="ui-flipbook">
