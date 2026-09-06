@@ -8,14 +8,12 @@
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   
-  <!-- jQuery and Turn.js -->
+  <!-- jQuery and Turn.js Libraries -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
 
   <style>
-    /* ==========================================================================
-       CONTAINER & FRAME SETUP
-       ========================================================================== */
+    /* ALL CSS GOES HERE */
     html, body {
       margin: 0;
       padding: 0;
@@ -35,20 +33,19 @@
       perspective: 2000px;
     }
 
-    /* ==========================================================================
-       STAGE 1: 3D SINGLE COVER VIEW
-       ========================================================================== */
+    /* 3D Cover Setup */
     .v-book {
       width: 280px;
       height: 615px;
       position: relative;
       transform-style: preserve-3d;
-      transition: transform 1200ms cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms;
+      transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms;
       cursor: pointer;
     }
 
+    /* Hover effect: Pop-up lift without rotation */
     .v-book:hover {
-      transform: translate3d(0, -10px, 50px) rotate3d(0, 1, 0, -15deg);
+      transform: translate3d(0, -15px, 30px);
     }
 
     .v-book__cover {
@@ -93,13 +90,11 @@
       pointer-events: none;
     }
 
-    /* ==========================================================================
-       STAGE 2: FLIPBOOK VIEW (4 PAGES TOTAL)
-       ========================================================================== */
+    /* Flipbook Setup */
     .flipbook-container {
       display: none;
       position: absolute;
-      width: 560px; /* Double page spread width */
+      width: 560px;
       height: 615px;
       opacity: 0;
       transition: opacity 800ms ease-in-out;
@@ -125,7 +120,6 @@
       background-repeat: no-repeat;
     }
 
-    /* Local Image Assignments */
     .page1 { background-image: url("page1.jpg"); }
     .page2 { background-image: url("page2.jpg"); }
     .page3 { background-image: url("page3.jpg"); }
@@ -161,14 +155,14 @@
 <body>
 
 <div class="book-wrapper">
-  <!-- STAGE 1: 3D Single Cover -->
+  <!-- 3D Cover View -->
   <div class="v-book" id="coverBook">
     <div class="v-book__cover is-front"></div>
     <div class="v-book__cover is-back"></div>
     <div class="v-book__spine"></div>
   </div>
 
-  <!-- STAGE 2: Interactive 4-Page Flipbook -->
+  <!-- 4-Page Flipbook View -->
   <div class="flipbook-container" id="flipbookContainer">
     <div class="nav-arrow prev" id="prevBtn"><i class="fas fa-chevron-left"></i></div>
     <div class="nav-arrow next" id="nextBtn"><i class="fas fa-chevron-right"></i></div>
@@ -183,34 +177,36 @@
 </div>
 
 <script>
+  /* ALL JAVASCRIPT GOES HERE */
   $(document).ready(function() {
     var $cover = $('#coverBook');
     var $flipbookContainer = $('#flipbookContainer');
     var $flipbook = $('#flipbook');
 
-    // 1. Initialize Turn.js with exactly 4 pages
+    // Initialize Turn.js
     $flipbook.turn({
       width: 560,
       height: 615,
       pages: 4,
+      page: 1,
       autoCenter: true,
-      duration: 1000,
+      duration: 800,
       gradients: true,
       elevation: 50
     });
 
-    // 2. Click Cover: Open smoothly into pages 2 & 3
+    // Click cover to open into pages 2 & 3
     $cover.on('click', function() {
       $cover.addClass('open-animation');
       
       setTimeout(function() {
         $cover.hide();
         $flipbookContainer.addClass('active');
-        $flipbook.turn('page', 2); // Opens directly to inside spread (Page 2 & 3)
-      }, 600);
+        $flipbook.turn('page', 2);
+      }, 500);
     });
 
-    // 3. Arrow Navigation Controls
+    // Arrow navigation
     $('#prevBtn').on('click', function() {
       $flipbook.turn('previous');
     });
@@ -219,14 +215,11 @@
       $flipbook.turn('next');
     });
 
-    // 4. Auto-Close when reaching the last page (Back Cover) or going back to Page 1
+    // Close back to 3D cover ONLY when turning back to page 1
     $flipbook.bind('turned', function(event, page, view) {
-      if (page === 4 || page === 1) {
-        setTimeout(function() {
-          $flipbookContainer.removeClass('active');
-          $cover.show().removeClass('open-animation');
-          $flipbook.turn('page', 1);
-        }, 1000);
+      if (page === 1) {
+        $flipbookContainer.removeClass('active');
+        $cover.show().removeClass('open-animation');
       }
     });
   });
