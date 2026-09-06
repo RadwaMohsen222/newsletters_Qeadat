@@ -1,6 +1,4 @@
-/* ==========================================================================
-   CONTAINER & FRAME SETUP
-   ========================================================================== */
+/* ALL CSS */
 html, body {
   margin: 0;
   padding: 0;
@@ -20,20 +18,19 @@ html, body {
   perspective: 2000px;
 }
 
-/* ==========================================================================
-   STAGE 1: 3D SINGLE COVER VIEW
-   ========================================================================== */
+/* 3D Cover Setup */
 .v-book {
   width: 280px;
   height: 615px;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 1200ms cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms;
+  transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms;
   cursor: pointer;
 }
 
+/* Hover effect: Pop-up lift without rotation */
 .v-book:hover {
-  transform: translate3d(0, -10px, 50px) rotate3d(0, 1, 0, -15deg);
+  transform: translate3d(0, -15px, 30px);
 }
 
 .v-book__cover {
@@ -78,13 +75,11 @@ html, body {
   pointer-events: none;
 }
 
-/* ==========================================================================
-   STAGE 2: FLIPBOOK VIEW (4 PAGES TOTAL)
-   ========================================================================== */
+/* Flipbook Setup */
 .flipbook-container {
   display: none;
   position: absolute;
-  width: 560px; /* Double page spread width */
+  width: 560px;
   height: 615px;
   opacity: 0;
   transition: opacity 800ms ease-in-out;
@@ -110,7 +105,6 @@ html, body {
   background-repeat: no-repeat;
 }
 
-/* Local Image Assignments */
 .page1 { background-image: url("page1.jpg"); }
 .page2 { background-image: url("page2.jpg"); }
 .page3 { background-image: url("page3.jpg"); }
