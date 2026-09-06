@@ -104,7 +104,7 @@ body {
   position: absolute;
   top: 0;
   left: -14.7px;          /* Offset by half the spine width */
-  width: 29.4px;          /* Scaled from 49px to match the 280px book width */
+  width: 10px;          /* Scaled from 49px to match the 280px book width */
   height: 100%;
   transform: rotate3d(0, 1, 0, -90deg);
   background-color: white;
