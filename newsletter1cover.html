@@ -11,85 +11,93 @@
 
 <body>
 
-<div class="book-stage">
+    <div class="book-stage">
 
-    <div id="book" class="book closed">
+        <div id="book" class="book closed">
 
-        <!-- LEFT SIDE -->
-        <div class="page fixed-page left-page">
-            <img id="leftPageImage" src="page1.jpg" alt="">
-        </div>
-
-        <!-- RIGHT SIDE UNDER THE FLIPPING PAGE -->
-        <div class="page fixed-page right-page">
-            <img id="rightPageImage" src="page2.jpg" alt="">
-        </div>
-
-
-        <!-- FRONT COVER -->
-        <div id="frontCover" class="flip-page front-cover">
-
-            <div class="face front-face">
-                <img src="front.jpg" alt="Front Cover">
+            <!-- Left page of the open book -->
+            <div class="page fixed-page left-page">
+                <img id="leftPageImage" src="page1.jpg" alt="">
             </div>
 
-            <div class="face back-face">
-                <img src="page1.jpg" alt="">
+            <!-- Right page of the open book -->
+            <div class="page fixed-page right-page">
+                <img id="rightPageImage" src="page2.jpg" alt="">
+            </div>
+
+
+            <!-- FRONT COVER -->
+            <div id="frontCover" class="flip-page front-cover">
+
+                <div class="face front-face">
+                    <img src="front.jpg" alt="Front Cover">
+                </div>
+
+                <div class="face back-face">
+                    <img src="page1.jpg" alt="">
+                </div>
+
+            </div>
+
+
+            <!-- MIDDLE PAGE TURN -->
+            <div id="middleFlip" class="flip-page middle-flip">
+
+                <div class="face front-face">
+                    <img src="page2.jpg" alt="">
+                </div>
+
+                <div class="face back-face">
+                    <img src="page3.jpg" alt="">
+                </div>
+
+            </div>
+
+
+            <!-- LAST PAGE TURN / BACK COVER -->
+            <div id="backFlip" class="flip-page back-flip">
+
+                <div class="face front-face">
+                    <img src="page4.jpg" alt="">
+                </div>
+
+                <div class="face back-face">
+                    <img src="back.jpg" alt="Back Cover">
+                </div>
+
+            </div>
+
+
+            <!-- BOOK SPINE -->
+            <div id="spine" class="spine">
+                <img src="spine.jpg" alt="">
             </div>
 
         </div>
 
 
-        <!-- PAGE 2 -> PAGE 3 FLIP -->
-        <div id="middleFlip" class="flip-page middle-flip">
-
-            <div class="face front-face">
-                <img src="page2.jpg" alt="">
-            </div>
-
-            <div class="face back-face">
-                <img src="page3.jpg" alt="">
-            </div>
-
-        </div>
+        <!-- PREVIOUS ARROW -->
+        <button
+            id="previousButton"
+            class="arrow previous"
+            aria-label="Previous page">
+            &#10094;
+        </button>
 
 
-        <!-- PAGE 4 -> BACK COVER FLIP -->
-        <div id="backFlip" class="flip-page back-flip">
-
-            <div class="face front-face">
-                <img src="page4.jpg" alt="">
-            </div>
-
-            <div class="face back-face">
-                <img src="back.jpg" alt="Back Cover">
-            </div>
-
-        </div>
-
-
-        <!-- BOOK SPINE -->
-        <div id="spine" class="spine">
-            <img src="spine.jpg" alt="">
-        </div>
+        <!-- NEXT ARROW -->
+        <button
+            id="nextButton"
+            class="arrow next"
+            aria-label="Next page">
+            &#10095;
+        </button>
 
     </div>
 
 
-    <!-- ARROWS -->
-
-    <button id="previousButton" class="arrow previous" aria-label="Previous page">
-        &#10094;
-    </button>
-
-    <button id="nextButton" class="arrow next" aria-label="Next page">
-        &#10095;
-    </button>
-
-</div>
-
-
-<script src="newsletter1cover.js"></script>
+    <!-- JavaScript -->
+    <script src="newsletter1cover.js"></script>
 
 </body>
 </html>
