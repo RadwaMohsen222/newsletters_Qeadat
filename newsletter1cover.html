@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Interactive Book</title>
   
-  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  
-  <!-- jQuery and Turn.js -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
 
@@ -32,7 +29,7 @@
       perspective: 2000px;
     }
 
-    /* 3D Standalone Cover View */
+    /* 3D Cover Setup */
     .v-book {
       width: 280px;
       height: 615px;
@@ -118,16 +115,13 @@
       background-repeat: no-repeat;
     }
 
-    /* Page Backgrounds */
+    /* Page Assignments */
     .page-front { background-image: url("front.jpg"); }
     .page-1     { background-image: url("page1.jpg"); }
     .page-2     { background-image: url("page2.jpg"); }
     .page-3     { background-image: url("page3.jpg"); }
     .page-4     { background-image: url("page4.jpg"); }
     .page-back  { background-image: url("back.jpg"); }
-
-    /* Hidden Buffer Pages */
-    .blank-page { background-color: #fff; }
 
     /* Navigation Arrows */
     .nav-arrow {
@@ -166,7 +160,7 @@
     <div class="v-book__spine"></div>
   </div>
 
-  <!-- Interactive Spread Flipbook -->
+  <!-- Flipbook Container -->
   <div class="flipbook-container" id="flipbookContainer">
     <div class="nav-arrow prev" id="prevBtn"><i class="fas fa-chevron-left"></i></div>
     <div class="nav-arrow next" id="nextBtn"><i class="fas fa-chevron-right"></i></div>
@@ -175,18 +169,16 @@
       <!-- Page 1: Single Front Cover -->
       <div class="hard page page-front"></div>
       
-      <!-- Inside Spreads -->
+      <!-- Spread 1: Page 2 & Page 3 -->
       <div class="page page-1"></div>
       <div class="page page-2"></div>
+      
+      <!-- Spread 2: Page 4 & Page 5 -->
       <div class="page page-3"></div>
       <div class="page page-4"></div>
       
-      <!-- Inside Back Cover Lining (Hidden Buffer) -->
-      <div class="page blank-page"></div>
-      
-      <!-- Page 7/8: Single Back Cover -->
+      <!-- Page 6: Single Back Cover -->
       <div class="hard page page-back"></div>
-      <div class="hard page blank-page"></div>
     </div>
   </div>
 </div>
@@ -198,31 +190,30 @@
     var $flipbook = $('#flipbook');
     var autoCloseTimer = null;
 
-    // Initialize Turn.js with 8 total slots for proper hardcover centering
+    // Initialize Turn.js
     $flipbook.turn({
       width: 560,
       height: 615,
-      pages: 8,
+      pages: 6,
       page: 1,
       autoCenter: true,
       duration: 800,
       gradients: true,
-      elevation: 50,
-      display: 'double'
+      elevation: 50
     });
 
-    // 1. Click Cover: Open 3D animation and jump directly to pages 1 & 2
+    // Opening from 3D cover directly into inside spread (pages 2 & 3)
     $cover.on('click', function() {
       $cover.addClass('open-animation');
       
       setTimeout(function() {
         $cover.hide();
         $flipbookContainer.addClass('active');
-        $flipbook.turn('page', 2); // Shows page1.jpg (left) & page2.jpg (right)
+        $flipbook.turn('page', 2); // Jump directly to inside spread
       }, 500);
     });
 
-    // 2. Arrow Controls
+    // Arrow Navigation
     $('#prevBtn').on('click', function() {
       if (autoCloseTimer) clearTimeout(autoCloseTimer);
       $flipbook.turn('previous');
@@ -233,12 +224,12 @@
       $flipbook.turn('next');
     });
 
-    // 3. Logic for standalone back cover & 3-second auto close
+    // Sequence Monitoring & Auto-Reset Logic
     $flipbook.bind('turned', function(event, page, view) {
       if (autoCloseTimer) clearTimeout(autoCloseTimer);
 
-      // Reaching the Back Cover (Page 7)
-      if (page >= 7) {
+      // Reached back cover (Page 6) -> Wait 3 seconds, then return to 3D cover
+      if (page === 6) {
         autoCloseTimer = setTimeout(function() {
           $flipbookContainer.removeClass('active');
           $cover.show().removeClass('open-animation');
@@ -246,7 +237,7 @@
         }, 3000);
       }
 
-      // Flipping all the way back to Front Cover (Page 1)
+      // Returned to front cover inside flipbook (Page 1) -> Immediately return to 3D cover
       if (page === 1) {
         $flipbookContainer.removeClass('active');
         $cover.show().removeClass('open-animation');
