@@ -18,6 +18,7 @@ html, body {
   cursor: pointer;
 }
 
+/* Hover Effect: Turns 180 degrees */
 .v-book:hover {
   transform: translate3d(0, 0, 100px) rotate3d(0, 1, 0, 180deg);
 }
@@ -27,53 +28,20 @@ html, body {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  border: 1px solid #ccc;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
 }
 
-/* Temporary visible colors for testing */
+/* Front Cover */
 .v-book__cover.is-front {
-  background-color: #2b5c8f; /* Blue Front Cover */
+  background-color: #2b5c8f; /* Fallback color */
   transform: translate3d(0, 0, 5px);
   z-index: 10;
+  border-radius: 1px 3px 2px 1px;
 }
 
-.v-book__cover.is-back {
-  background-color: #e0e0e0; /* Grey Back Cover */
-  transform: rotate3d(0, 1, 0, -180deg) translate3d(0, 0, 6px);
-  box-shadow: 3px 3px 15px rgba(0,0,0,0.2);
-}
-
-.v-book__spine {
-  position: absolute;
-  top: 0;
-  left: -7px;
-  width: 14px;
-  height: 100%;
-  transform: rotate3d(0, 1, 0, -90deg);
-  background-color: #1a3a5c;
-
-  /* Back Cover Shadow - Normal State */
-.v-book__cover.is-back {
-  transform: rotate3d(0, 1, 0, -180deg) translate3d(0, 0, 6px);
-  /* Stronger ambient drop shadow */
-  box-shadow: 
-    8px 8px 25px rgba(0, 0, 0, 0.4),
-    2px 2px 8px rgba(0, 0, 0, 0.25);
-  border-radius: 3px 1px 2px 2px;
-  transition: box-shadow 480ms ease-in-out;
-}
-
-/* Back Cover Shadow - Hovered / Lifted State */
-.v-book:hover .v-book__cover.is-back {
-  /* Dramatic, deep shadow when flipped towards the reader */
-  box-shadow: 
-    -35px 25px 50px rgba(0, 0, 0, 0.35),
-    -10px 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-/* Front Cover Crease Shadow (Spine Inset Shadow) */
+/* Front Cover Crease Shadow */
 .v-book__cover.is-front::after {
   content: '';
   position: absolute;
@@ -84,4 +52,34 @@ html, body {
   background: linear-gradient(to right, rgba(0, 0, 0, 0.25), transparent);
   pointer-events: none;
 }
+
+/* Back Cover + Enhanced Shadows */
+.v-book__cover.is-back {
+  background-color: #e0e0e0; /* Fallback color */
+  transform: rotate3d(0, 1, 0, -180deg) translate3d(0, 0, 6px);
+  border-radius: 3px 1px 2px 2px;
+  transition: box-shadow 480ms ease-in-out;
+  
+  /* Resting Drop Shadow */
+  box-shadow: 
+    8px 8px 25px rgba(0, 0, 0, 0.4),
+    2px 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Deep Hover Shadow */
+.v-book:hover .v-book__cover.is-back {
+  box-shadow: 
+    -35px 25px 50px rgba(0, 0, 0, 0.35),
+    -10px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Spine */
+.v-book__spine {
+  position: absolute;
+  top: 0;
+  left: -7px;
+  width: 14px;
+  height: 100%;
+  transform: rotate3d(0, 1, 0, -90deg);
+  background-color: #1a3a5c;
 }
