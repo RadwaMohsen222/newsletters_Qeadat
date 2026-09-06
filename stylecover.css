@@ -4,9 +4,9 @@ body {
   perspective-origin: left center;
   margin: 0;
   overflow: hidden;
+  background: transparent;
 }
 
-/* Single Book Container */
 .v-book {
   flex-shrink: 0;
   width: 15rem;
@@ -17,7 +17,7 @@ body {
   cursor: pointer;
 }
 
-/* Hover Effect: Rotates 180 Degrees to Show the Back */
+/* Hover Effect: Turns 180 degrees */
 .v-book:hover {
   transform: translate3d(0, 0, 140px) rotate3d(0, 1, 0, 180deg);
 }
@@ -33,7 +33,7 @@ body {
   box-sizing: border-box;
 }
 
-/* Front Cover Setup */
+/* Front Cover */
 .v-book__cover.is-front {
   display: flex;
   justify-content: center;
@@ -42,26 +42,20 @@ body {
   transform: translate3d(0, 0, 5px);
   z-index: 10;
   border-radius: 1px 3px 2px 1px;
-  
-  /* ADD YOUR FRONT COVER IMAGE / GIF HERE */
-  background-image: url('front-cover.jpg'); 
 }
 
-/* Back Cover Setup */
+/* Back Cover */
 .v-book__cover.is-back {
   transform: rotate3d(0, 1, 0, -180deg) translate3d(0, 0, 6px);
   box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.25);
   border-radius: 3px 1px 2px 2px;
-  
-  /* ADD YOUR BACK COVER IMAGE / GIF HERE */
-  background-image: url('back-cover.jpg'); 
 }
 
 .v-book:hover .v-book__cover.is-back {
   box-shadow: -30px 16px 40px rgba(0, 0, 0, 0.15);
 }
 
-/* Spine Setup */
+/* Spine */
 .v-book__spine {
   position: absolute;
   top: 0;
