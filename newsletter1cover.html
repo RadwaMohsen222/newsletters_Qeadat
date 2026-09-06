@@ -1,71 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Newsletter</title>
+    <title>Newsletter Flipbook</title>
 
-    <link rel="stylesheet" href="stylecover.css">
-
+    <link rel="stylesheet" href="newsletter1cover.css">
 </head>
 
 <body>
 
-    <div class="catalog-app">
+    <div id="flipbook-container">
 
-        <div id="viewer">
+        <div id="flipbook">
 
-            <div id="flipbook" class="ui-flipbook">
-
-                <!-- NEXT / PREVIOUS ARROWS -->
-                <a ignore="1"
-                   class="ui-arrow-control ui-arrow-next-page">
-                    <i class="fas fa-chevron-right"></i>
-                </a>
-
-                <a ignore="1"
-                   class="ui-arrow-control ui-arrow-previous-page">
-                    <i class="fas fa-chevron-left"></i>
-                </a>
-
-
-                <!-- PAGE 1 : FRONT COVER -->
-                <div class="page1"></div>
-
-                <!-- PAGE 2 : INSIDE LEFT -->
-                <div class="page2"></div>
-
-                <!-- PAGE 3 : INSIDE RIGHT -->
-                <div class="page3"></div>
-
-                <!-- PAGE 4 : SECOND SPREAD LEFT -->
-                <div class="page4"></div>
-
-                <!-- PAGE 5 : SECOND SPREAD RIGHT -->
-                <div class="page5"></div>
-
-                <!-- PAGE 6 : SPINE -->
-                <div class="page6"></div>
-
-                <!-- PAGE 7 : BACK COVER -->
-                <div class="page7"></div>
-
-            </div>
+            <div class="page page1"></div>
+            <div class="page page2"></div>
+            <div class="page page3"></div>
+            <div class="page page4"></div>
+            <div class="page page5"></div>
+            <div class="page page6"></div>
+            <div class="page page7"></div>
 
         </div>
+
+        <button id="previous" class="arrow left">
+            ‹
+        </button>
+
+        <button id="next" class="arrow right">
+            ›
+        </button>
 
     </div>
 
 
-    <!-- Turn.js -->
-    <script src="turn.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <!-- Your flipbook JS -->
+    <!-- YOUR TURN.JS FILE -->
+    <script src="turn.min.js"></script>
+
+    <!-- YOUR JAVASCRIPT -->
     <script src="newsletter1cover.js"></script>
 
 </body>
-
 </html>
