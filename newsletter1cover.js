@@ -1,11 +1,9 @@
 $(document).ready(function () {
-  $("#flipbook").turn({
+  $(".flipbook").turn({
     width: 932,
     height: 1024,
-    autoCenter: true,
-    duration: 1000,
-    acceleration: true,
+    elevation: 50,
     gradients: true,
-    elevation: 50
+    autoCenter: true
   });
 });
