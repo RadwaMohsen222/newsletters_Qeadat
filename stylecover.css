@@ -10,7 +10,7 @@ body {
 .v-book {
   flex-shrink: 0;
   width: 15rem;
-  height: 32rem;
+  height: 40rem;
   position: relative;
   transform-style: preserve-3d;
   transition: transform 480ms ease-in-out;
