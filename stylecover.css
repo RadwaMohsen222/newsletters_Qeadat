@@ -1,164 +1,30 @@
-* {
-    box-sizing: border-box;
-}
-
-html,
 body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
+  overflow: hidden;
+  background-color: #222;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
-
-body {
-    background: #eeeeee;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-
-/* -------------------------
-   FLIPBOOK
-------------------------- */
-
-#flipbook-container {
-    position: relative;
-
-    width: 932px;
-    height: 1024px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 
 #flipbook {
-    width: 932px;
-    height: 1024px;
+  /* Width = 2 * 466px, Height = 1024px */
+  width: 932px;
+  height: 1024px;
+  transition: margin-left 0.2s ease-in-out;
 }
 
-
-/* Every page */
-
-.page {
-    width: 466px;
-    height: 1024px;
-
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-
-    background-color: white;
+#flipbook .page {
+  width: 466px;
+  height: 1024px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: center;
+  background-color: #fff;
 }
-
-
-/* -------------------------
-   YOUR PAGES
-------------------------- */
-
-.page1 {
-    background-image: url("front.jpg");
-}
-
-.page2 {
-    background-image: url("page1.jpg");
-}
-
-.page3 {
-    background-image: url("page2.jpg");
-}
-
-.page4 {
-    background-image: url("page3.jpg");
-}
-
-.page5 {
-    background-image: url("page4.jpg");
-}
-
-.page6 {
-    background-image: url("spine.jpg");
-}
-
-.page7 {
-    background-image: url("back.jpg");
-}
-
-
-/* -------------------------
-   ARROWS
-------------------------- */
-
-.arrow {
-    position: absolute;
-
-    top: 50%;
-    transform: translateY(-50%);
-
-    width: 50px;
-    height: 70px;
-
-    border: none;
-    background: rgba(0, 0, 0, 0.35);
-
-    color: white;
-
-    font-size: 55px;
-    line-height: 50px;
-
-    cursor: pointer;
-
-    z-index: 100;
-
-    opacity: 0.7;
-
-    transition:
-        opacity 0.2s ease,
-        transform 0.2s ease;
-}
-
-.arrow:hover {
-    opacity: 1;
-}
-
-.arrow.left {
-    left: -70px;
-}
-
-.arrow.right {
-    right: -70px;
-}
-
-
-/* -------------------------
-   TURN.JS SHADOW
-------------------------- */
 
 #flipbook .shadow {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-}
-
-
-/* -------------------------
-   SMALL SCREENS
-------------------------- */
-
-@media (max-width: 1100px) {
-
-    #flipbook-container {
-        transform: scale(0.75);
-    }
-
-}
-
-
-@media (max-width: 700px) {
-
-    #flipbook-container {
-        transform: scale(0.5);
-    }
-
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
