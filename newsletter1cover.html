@@ -1,103 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Newsletter</title>
 
     <link rel="stylesheet" href="stylecover.css">
+
 </head>
 
 <body>
 
-    <div class="book-stage">
+    <div class="catalog-app">
 
-        <div id="book" class="book closed">
+        <div id="viewer">
 
-            <!-- Left page of the open book -->
-            <div class="page fixed-page left-page">
-                <img id="leftPageImage" src="page1.jpg" alt="">
-            </div>
+            <div id="flipbook" class="ui-flipbook">
 
-            <!-- Right page of the open book -->
-            <div class="page fixed-page right-page">
-                <img id="rightPageImage" src="page2.jpg" alt="">
-            </div>
+                <!-- NEXT / PREVIOUS ARROWS -->
+                <a ignore="1"
+                   class="ui-arrow-control ui-arrow-next-page">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
 
-
-            <!-- FRONT COVER -->
-            <div id="frontCover" class="flip-page front-cover">
-
-                <div class="face front-face">
-                    <img src="front.jpg" alt="Front Cover">
-                </div>
-
-                <div class="face back-face">
-                    <img src="page1.jpg" alt="">
-                </div>
-
-            </div>
+                <a ignore="1"
+                   class="ui-arrow-control ui-arrow-previous-page">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
 
 
-            <!-- MIDDLE PAGE TURN -->
-            <div id="middleFlip" class="flip-page middle-flip">
+                <!-- PAGE 1 : FRONT COVER -->
+                <div class="page1"></div>
 
-                <div class="face front-face">
-                    <img src="page2.jpg" alt="">
-                </div>
+                <!-- PAGE 2 : INSIDE LEFT -->
+                <div class="page2"></div>
 
-                <div class="face back-face">
-                    <img src="page3.jpg" alt="">
-                </div>
+                <!-- PAGE 3 : INSIDE RIGHT -->
+                <div class="page3"></div>
 
-            </div>
+                <!-- PAGE 4 : SECOND SPREAD LEFT -->
+                <div class="page4"></div>
 
+                <!-- PAGE 5 : SECOND SPREAD RIGHT -->
+                <div class="page5"></div>
 
-            <!-- LAST PAGE TURN / BACK COVER -->
-            <div id="backFlip" class="flip-page back-flip">
+                <!-- PAGE 6 : SPINE -->
+                <div class="page6"></div>
 
-                <div class="face front-face">
-                    <img src="page4.jpg" alt="">
-                </div>
+                <!-- PAGE 7 : BACK COVER -->
+                <div class="page7"></div>
 
-                <div class="face back-face">
-                    <img src="back.jpg" alt="Back Cover">
-                </div>
-
-            </div>
-
-
-            <!-- BOOK SPINE -->
-            <div id="spine" class="spine">
-                <img src="spine.jpg" alt="">
             </div>
 
         </div>
 
-
-        <!-- PREVIOUS ARROW -->
-        <button
-            id="previousButton"
-            class="arrow previous"
-            aria-label="Previous page">
-            &#10094;
-        </button>
-
-
-        <!-- NEXT ARROW -->
-        <button
-            id="nextButton"
-            class="arrow next"
-            aria-label="Next page">
-            &#10095;
-        </button>
-
     </div>
 
 
-    <!-- JavaScript -->
+    <!-- Turn.js -->
+    <script src="turn.js"></script>
+
+    <!-- Your flipbook JS -->
     <script src="newsletter1cover.js"></script>
 
 </body>
+
 </html>
