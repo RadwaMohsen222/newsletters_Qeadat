@@ -1,60 +1,164 @@
-$(document).ready(function () {
+* {
+    box-sizing: border-box;
+}
 
-    var $flipbook = $('#flipbook');
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
 
-    // Initialize Turn.js
-    $flipbook.turn({
-        width: 932,
-        height: 1024,
+body {
+    background: #eeeeee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
 
-        display: 'double',
-        pages: 7,
-        page: 1,
 
-        autoCenter: true,
-        animatedAutoCenter: true,
+/* -------------------------
+   FLIPBOOK
+------------------------- */
 
-        duration: 600,
-        elevation: 10,
-        gradients: true,
+#flipbook-container {
+    position: relative;
 
-        acceleration: true,
-        hover: true,
-        smartFlip: true,
-        swipe: true,
+    width: 932px;
+    height: 1024px;
 
-        responsive: true,
-        autoScaleContent: true,
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        turnCorners: 'l,r'
-    });
 
-    // Next arrow
-    $('.ui-arrow-next-page').on('click', function (e) {
-        e.preventDefault();
-        $flipbook.turn('next');
-    });
+#flipbook {
+    width: 932px;
+    height: 1024px;
+}
 
-    // Previous arrow
-    $('.ui-arrow-previous-page').on('click', function (e) {
-        e.preventDefault();
-        $flipbook.turn('previous');
-    });
 
-    // When the back cover is reached
-    var restartTimer;
+/* Every page */
 
-    $flipbook.on('turned', function (event, page) {
+.page {
+    width: 466px;
+    height: 1024px;
 
-        clearTimeout(restartTimer);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 
-        if (page === 7) {
+    background-color: white;
+}
 
-            // Stay on the back cover for 2 seconds
-            restartTimer = setTimeout(function () {
-                $flipbook.turn('page', 1);
-            }, 2000);
-        }
-    });
 
-});
+/* -------------------------
+   YOUR PAGES
+------------------------- */
+
+.page1 {
+    background-image: url("front.jpg");
+}
+
+.page2 {
+    background-image: url("page1.jpg");
+}
+
+.page3 {
+    background-image: url("page2.jpg");
+}
+
+.page4 {
+    background-image: url("page3.jpg");
+}
+
+.page5 {
+    background-image: url("page4.jpg");
+}
+
+.page6 {
+    background-image: url("spine.jpg");
+}
+
+.page7 {
+    background-image: url("back.jpg");
+}
+
+
+/* -------------------------
+   ARROWS
+------------------------- */
+
+.arrow {
+    position: absolute;
+
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 50px;
+    height: 70px;
+
+    border: none;
+    background: rgba(0, 0, 0, 0.35);
+
+    color: white;
+
+    font-size: 55px;
+    line-height: 50px;
+
+    cursor: pointer;
+
+    z-index: 100;
+
+    opacity: 0.7;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.arrow:hover {
+    opacity: 1;
+}
+
+.arrow.left {
+    left: -70px;
+}
+
+.arrow.right {
+    right: -70px;
+}
+
+
+/* -------------------------
+   TURN.JS SHADOW
+------------------------- */
+
+#flipbook .shadow {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* -------------------------
+   SMALL SCREENS
+------------------------- */
+
+@media (max-width: 1100px) {
+
+    #flipbook-container {
+        transform: scale(0.75);
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    #flipbook-container {
+        transform: scale(0.5);
+    }
+
+}
