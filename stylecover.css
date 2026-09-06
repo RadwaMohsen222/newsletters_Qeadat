@@ -41,7 +41,7 @@ html, body {
   border-radius: 1px 3px 2px 1px;
 }
 
-/* Front Cover Crease Shadow */
+/* Front Cover Crease Shadow (Spine Fold Effect) */
 .v-book__cover.is-front::after {
   content: '';
   position: absolute;
@@ -53,9 +53,9 @@ html, body {
   pointer-events: none;
 }
 
-/* Back Cover + Soft 45-Degree Shadows */
+/* Back Cover + Soft 45-Degree Fuzzy Outer Shadows */
 .v-book__cover.is-back {
-  background-color: #e0e0e0; 
+  background-color: #e0e0e0; /* Fallback color */
   transform: rotate3d(0, 1, 0, -180deg) translate3d(0, 0, 6px);
   border-radius: 3px 1px 2px 2px;
   transition: box-shadow 480ms ease-in-out;
