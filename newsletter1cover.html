@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>4-Page Interactive Book</title>
+  <title>Interactive Book</title>
   
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   
-  <!-- jQuery and Turn.js Libraries -->
+  <!-- jQuery and Turn.js -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
 
   <style>
-    /* ALL CSS GOES HERE */
     html, body {
       margin: 0;
       padding: 0;
@@ -60,14 +59,14 @@
     }
 
     .v-book__cover.is-front {
-      background-image: url("page1.jpg");
+      background-image: url("front.jpg");
       transform: translate3d(0, 0, 14.7px);
       box-shadow: 10px 10px 30px rgba(0,0,0,0.3);
       z-index: 10;
     }
 
     .v-book__cover.is-back {
-      background-image: url("page4.jpg");
+      background-image: url("back.jpg");
       transform: rotate3d(0, 1, 0, 180deg) translate3d(0, 0, 14.7px);
       box-shadow: -10px 10px 30px rgba(0,0,0,0.3);
     }
@@ -79,7 +78,7 @@
       width: 29.4px;
       height: 100%;
       transform: rotate3d(0, 1, 0, -90deg);
-      background-image: url("page1.jpg");
+      background-image: url("spine.jpg");
       background-size: cover;
       backface-visibility: hidden;
     }
@@ -120,10 +119,13 @@
       background-repeat: no-repeat;
     }
 
-    .page1 { background-image: url("page1.jpg"); }
-    .page2 { background-image: url("page2.jpg"); }
-    .page3 { background-image: url("page3.jpg"); }
-    .page4 { background-image: url("page4.jpg"); }
+    /* Exact Page Sequence Mapping */
+    .page-front { background-image: url("front.jpg"); }
+    .page-1     { background-image: url("page1.jpg"); }
+    .page-2     { background-image: url("page2.jpg"); }
+    .page-3     { background-image: url("page3.jpg"); }
+    .page-4     { background-image: url("page4.jpg"); }
+    .page-back  { background-image: url("back.jpg"); }
 
     /* Navigation Arrows */
     .nav-arrow {
@@ -155,39 +157,40 @@
 <body>
 
 <div class="book-wrapper">
-  <!-- 3D Cover View -->
+  <!-- 3D Standalone Cover -->
   <div class="v-book" id="coverBook">
     <div class="v-book__cover is-front"></div>
     <div class="v-book__cover is-back"></div>
     <div class="v-book__spine"></div>
   </div>
 
-  <!-- 4-Page Flipbook View -->
+  <!-- Interactive Spread Flipbook -->
   <div class="flipbook-container" id="flipbookContainer">
     <div class="nav-arrow prev" id="prevBtn"><i class="fas fa-chevron-left"></i></div>
     <div class="nav-arrow next" id="nextBtn"><i class="fas fa-chevron-right"></i></div>
 
     <div id="flipbook" class="ui-flipbook">
-      <div class="page page1"></div>
-      <div class="page page2"></div>
-      <div class="page page3"></div>
-      <div class="page page4"></div>
+      <div class="page page-front"></div>
+      <div class="page page-1"></div>
+      <div class="page page-2"></div>
+      <div class="page page-3"></div>
+      <div class="page page-4"></div>
+      <div class="page page-back"></div>
     </div>
   </div>
 </div>
 
 <script>
-  /* ALL JAVASCRIPT GOES HERE */
   $(document).ready(function() {
     var $cover = $('#coverBook');
     var $flipbookContainer = $('#flipbookContainer');
     var $flipbook = $('#flipbook');
 
-    // Initialize Turn.js
+    // Initialize Turn.js with exactly 6 elements (front, page1-4, back)
     $flipbook.turn({
       width: 560,
       height: 615,
-      pages: 4,
+      pages: 6,
       page: 1,
       autoCenter: true,
       duration: 800,
@@ -195,18 +198,18 @@
       elevation: 50
     });
 
-    // Click cover to open into pages 2 & 3
+    // 1. Click Cover: Animates opening and jumps straight to page1 & page2
     $cover.on('click', function() {
       $cover.addClass('open-animation');
       
       setTimeout(function() {
         $cover.hide();
         $flipbookContainer.addClass('active');
-        $flipbook.turn('page', 2);
+        $flipbook.turn('page', 2); // Page 2 displays page1 (left) and page2 (right)
       }, 500);
     });
 
-    // Arrow navigation
+    // 2. Navigation Controls
     $('#prevBtn').on('click', function() {
       $flipbook.turn('previous');
     });
@@ -215,7 +218,7 @@
       $flipbook.turn('next');
     });
 
-    // Close back to 3D cover ONLY when turning back to page 1
+    // 3. Reset to 3D cover ONLY if flipped back to front cover (Page 1)
     $flipbook.bind('turned', function(event, page, view) {
       if (page === 1) {
         $flipbookContainer.removeClass('active');
