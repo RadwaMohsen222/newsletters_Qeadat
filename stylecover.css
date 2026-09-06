@@ -53,4 +53,35 @@ html, body {
   height: 100%;
   transform: rotate3d(0, 1, 0, -90deg);
   background-color: #1a3a5c;
+
+  /* Back Cover Shadow - Normal State */
+.v-book__cover.is-back {
+  transform: rotate3d(0, 1, 0, -180deg) translate3d(0, 0, 6px);
+  /* Stronger ambient drop shadow */
+  box-shadow: 
+    8px 8px 25px rgba(0, 0, 0, 0.4),
+    2px 2px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 3px 1px 2px 2px;
+  transition: box-shadow 480ms ease-in-out;
+}
+
+/* Back Cover Shadow - Hovered / Lifted State */
+.v-book:hover .v-book__cover.is-back {
+  /* Dramatic, deep shadow when flipped towards the reader */
+  box-shadow: 
+    -35px 25px 50px rgba(0, 0, 0, 0.35),
+    -10px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Front Cover Crease Shadow (Spine Inset Shadow) */
+.v-book__cover.is-front::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.25), transparent);
+  pointer-events: none;
+}
 }
