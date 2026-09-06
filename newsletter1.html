@@ -1,39 +1,77 @@
- 
-    <div class="catalog-app ">
-        <div id="viewer">
-          <div id="flipbook" class="ui-flipbook">
-          
-            <a ignore="1" class="ui-arrow-control ui-arrow-next-page"><i class="fas fa-chevron-right"></i></a>
-            <a ignore="1" class="ui-arrow-control ui-arrow-previous-page"><i class="fas fa-chevron-left"></i></a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Newsletter 1 - Flipbook</title>
+  
+  <!-- Font Awesome for UI Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  
+  <!-- Shared Stylesheet for Inner Reader -->
+  <link rel="stylesheet" href="flippingbookstyle.css">
+  <!-- Page Specific Overrides (Optional) -->
+  <link rel="stylesheet" href="newsletter1.css">
+</head>
+<body>
 
-            <div class="page1"></div>
-            <div class="page2"></div>
-            <div class="page3"></div>
-            <div class="page4"></div>
-            <div class="page5"></div>
-            <div class="page6"></div>
-            <div class="page7"></div>
-            <div class="page8"></div>
-            <div class="page9"></div>
-            <div class="page10"></div>
-            <div class="page11"></div>
-            <div class="page14"></div>
-            <div class="page15"></div>
-            <div class="page16"></div>
-            <div class="page17"></div>
-            <div class="page18"></div>
-            <div class="page19"></div>
-            <div class="page20"></div>
-            
-           
-            
+  <div class="catalog-app">
+    <div id="viewer">
+      <div id="flipbook" class="ui-flipbook">
+        
+        <a ignore="1" class="ui-arrow-control ui-arrow-next-page"><i class="fas fa-chevron-right"></i></a>
+        <a ignore="1" class="ui-arrow-control ui-arrow-previous-page"><i class="fas fa-chevron-left"></i></a>
+
+        <!-- Insert your page image URLs inside these divs or via CSS -->
+        <div class="page page1"></div>
+        <div class="page page2"></div>
+        <div class="page page3"></div>
+        <div class="page page4"></div>
+        <div class="page page5"></div>
+        <div class="page page6"></div>
+        <div class="page page7"></div>
+        <div class="page page8"></div>
+        <div class="page page9"></div>
+        <div class="page page10"></div>
+        <div class="page page11"></div>
+        <div class="page page12"></div>
+        <div class="page page13"></div>
+        <div class="page page14"></div>
+        <div class="page page15"></div>
+        <div class="page page16"></div>
+        <div class="page page17"></div>
+        <div class="page page18"></div>
+        <div class="page page19"></div>
+        <div class="page page20"></div>
+
+      </div>
+    </div>
+    
+    <!-- controls -->
+    <div id="controls">
+      <div class="all">
+        <div class="ui-slider" id="page-slider">
+          <div class="bar">
+            <div class="progress-width">
+              <div class="progress">
+                <div class="handler"></div>
+              </div>
+            </div>
           </div>
         </div>
-      
-        <!-- controls -->
-        <div id="controls">
-          <div class="all">
-            <div class="ui-slider" id="page-slider">
+    
+        <div class="ui-options" id="options">
+          <a class="ui-icon" id="ui-icon-table-contents"><i class="fa fa-bars"></i></a>
+          <a class="ui-icon show-hint" title="Miniatures" id="ui-icon-miniature"><i class="fa fa-th"></i></a>
+          <a class="ui-icon show-hint" title="Share" id="ui-icon-share"><i class="fa fa-share"></i></a>
+          <a class="ui-icon show-hint" title="Full Screen" id="ui-icon-full-screen"><i class="fa fa-expand"></i></a>
+          <a class="ui-icon show-hint" id="ui-icon-toggle"><i class="fa fa-ellipsis-v"></i></a>
+        </div>
+    
+        <!-- zoom slider -->
+        <div id="zoom-slider-view" class="zoom-slider">
+          <div class="bg">
+            <div class="ui-slider" id="zoom-slider">
               <div class="bar">
                 <div class="progress-width">
                   <div class="progress">
@@ -42,56 +80,32 @@
                 </div>
               </div>
             </div>
-      
-            <div class="ui-options" id="options">
-              <a class="ui-icon" id="ui-icon-table-contents">
-                <i class="fa fa-bars"></i>
-              </a>
-              <a class="ui-icon show-hint" title="Miniatures" id="ui-icon-miniature">
-                <i class="fa fa-th"></i>
-              </a>
-            
-              <a class="ui-icon show-hint" title="Share" id="ui-icon-share">
-                <i class="fa fa-share"></i>
-              </a>
-              <a class="ui-icon show-hint" title="Full Screen" id="ui-icon-full-screen">
-                <i class="fa fa-expand"></i>
-              </a>
-              <a class="ui-icon show-hint" id="ui-icon-toggle">
-                <i class="fa fa-ellipsis-v"></i>
-              </a>
-            </div>
-      
-            <!-- zoom slider -->
-            <div id="zoom-slider-view" class="zoom-slider">
-              <div class="bg">
-                <div class="ui-slider" id="zoom-slider">
-                  <div class="bar">
-                    <div class="progress-width">
-                      <div class="progress">
-                        <div class="handler"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- / zoom slider -->
           </div>
-      
-          <div id="ui-icon-expand-options">
-            <a class="ui-icon show-hint">
-              <i class="fa fa-ellipsis-h"></i>
-            </a>
-          </div>
-      
         </div>
-        <!-- / controls -->
-      
-        <!-- miniatures -->
-        <div id="miniatures" class="ui-miniatures-slider">
-                 
-        </div>
-        <!-- / miniatures -->
-    </div>
+      </div>
     
+      <div id="ui-icon-expand-options">
+        <a class="ui-icon show-hint"><i class="fa fa-ellipsis-h"></i></a>
+      </div>
+    </div>
+
+    <!-- miniatures -->
+    <div id="miniatures" class="ui-miniatures-slider"></div>
+  </div>
+
+  <!-- JavaScript Libraries Required for Page Flipping -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
+  
+  <script>
+    // Basic turn.js initialization
+    $(document).ready(function() {
+      $("#flipbook").turn({
+        width: 800,
+        height: 500,
+        autoCenter: true
+      });
+    });
+  </script>
+</body>
+</html>
