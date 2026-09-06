@@ -2,32 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Flipping Book</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flipbook</title>
   <link rel="stylesheet" href="stylecover.css">
-  
-  <!-- Required Dependencies -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <!-- Assuming your provided script is saved as turn.js -->
-  <script src="turn.js"></script> 
+  <script src="newsletter1cover.js"></script>
 </head>
 <body>
 
-  <div id="flipbook">
-    <!-- Hard Cover Front -->
-    <div class="hard" style="background-image:url(front.jpg)"></div>
-    <div class="hard"></div>
-
-    <!-- Inner Pages -->
-    <div style="background-image:url(page1.jpg)"></div>
-    <div style="background-image:url(page2.jpg)"></div>
-    <div style="background-image:url(page3.jpg)"></div>
-    <div style="background-image:url(page4.jpg)"></div>
-
-    <!-- Hard Cover Back -->
-    <div class="hard"></div>
-    <div class="hard" style="background-image:url(back.jpg)"></div>
+  <div class="flipbook-viewport">
+    <div class="container">
+      <div class="flipbook">
+        <div class="hard" style="background-image:url(front.jpg)"></div>
+        <div class="hard"></div>
+        <div style="background-image:url(page1.jpg)"></div>
+        <div style="background-image:url(page2.jpg)"></div>
+        <div style="background-image:url(page3.jpg)"></div>
+        <div style="background-image:url(page4.jpg)"></div>
+        <div class="hard"></div>
+        <div class="hard" style="background-image:url(back.jpg)"></div>
+      </div>
+    </div>
   </div>
 
-  <script src="newsletter1cover.js"></script>
 </body>
 </html>
