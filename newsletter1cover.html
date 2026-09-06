@@ -4,12 +4,16 @@
   <meta charset="UTF-8">
   <link rel="stylesheet" href="stylecover.css">
 </head>
-<body>
+<body style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
 
   <div class="v-book">
-    <div class="v-book__cover is-front"></div>
-    <div class="v-book__spine"></div>
-    <div class="v-book__cover is-back"></div>
+    <!-- Set Front Cover Photo/GIF for Newsletter 1 -->
+    <div class="v-book__cover is-front" style="background-image: url('front.jpg');"></div>
+    
+    <div class="v-book__spine is-spine" style="background-image: url('split.jpg');"></div>
+    
+    <!-- Set Back Cover Photo/GIF for Newsletter 1 -->
+    <div class="v-book__cover is-back" style="background-image: url('back.jpg');"></div>
   </div>
 
 </body>
