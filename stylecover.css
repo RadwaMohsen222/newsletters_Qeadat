@@ -1,104 +1,65 @@
 /* ==========================================================================
-   PAGE SETUP (Removes Scrollbars in Google Sites Iframe)
+   CONTAINER & FRAME SETUP
    ========================================================================== */
-
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden; /* Prevents scrollbars in Google Sites */
+  overflow: hidden;
+  background-color: transparent;
   font-family: 'Open Sans', Arial, sans-serif;
-  background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/16584/retina_wood.png');
-  perspective: 1800px;
-  perspective-origin: 50% 50%;
 }
 
-.flex {
+.book-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  perspective: 2000px;
 }
 
 /* ==========================================================================
-   THE BOOK CONTAINER
+   STAGE 1: 3D SINGLE COVER VIEW
    ========================================================================== */
-
 .v-book {
-  flex-shrink: 0;
-  margin: auto; /* Replaced large rem margin to fit cleanly in embedded frames */
   width: 280px;
   height: 615px;
-  transform-style: preserve-3d;
-  transition: transform 1800ms cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
   position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1200ms cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms;
+  cursor: pointer;
 }
 
-/* Base Shadow */
-.v-book .v-book__cover.is-back {
-  box-shadow: 3px 3px 15px hsla(0, 0%, 0%, 0.25);
-  transition: box-shadow 1800ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Slow Flip on Hover */
 .v-book:hover {
-  transform: translate3d(0, 0, 100px) rotate3d(0, 1, 0, 180deg);
-  z-index: 100;
+  transform: translate3d(0, -10px, 50px) rotate3d(0, 1, 0, -15deg);
 }
-
-.v-book:hover .v-book__cover.is-back {
-  box-shadow: -30px 16px 40px hsla(0, 0%, 0%, 0.15);
-}
-
-/* Manual JS toggle class fallback */
-.v-book.is-flipped {
-  transform: translate3d(0, 0, 100px) rotate3d(0, 1, 0, 180deg);
-}
-
-.v-book.is-flipped .v-book__cover.is-back {
-  box-shadow: -30px 16px 40px hsla(0, 0%, 0%, 0.15);
-}
-
-/* ==========================================================================
-   COVERS & SPINE (Fixed Backface & Clipping Issues)
-   ========================================================================== */
 
 .v-book__cover {
   position: absolute;
   width: 100%;
   height: 100%;
-  padding: 0;
-  background-color: white;
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  /* Crucial: Stops the front cover from showing through when rotated 180 deg */
-  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  border-radius: 2px;
 }
 
 .v-book__cover.is-front {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform-origin: 0% 50%;
-  /* Shifted slightly forward along Z-axis */
+  background-image: url("page1.jpg");
   transform: translate3d(0, 0, 14.7px);
+  box-shadow: 10px 10px 30px rgba(0,0,0,0.3);
   z-index: 10;
-  border-radius: 1px 3px 2px 1px;
 }
 
 .v-book__cover.is-back {
-  /* Rotated & positioned cleanly behind the front cover */
+  background-image: url("page4.jpg");
   transform: rotate3d(0, 1, 0, 180deg) translate3d(0, 0, 14.7px);
-  background-color: white;
-  border-radius: 3px 1px 2px 2px;
+  box-shadow: -10px 10px 30px rgba(0,0,0,0.3);
 }
 
-/* Spine */
 .v-book__spine {
   position: absolute;
   top: 0;
@@ -106,27 +67,77 @@ html, body {
   width: 29.4px;
   height: 100%;
   transform: rotate3d(0, 1, 0, -90deg);
-  background-color: white;
-  background-position: center center;
+  background-image: url("page1.jpg");
   background-size: cover;
-  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
 }
 
-/* Groove Effect */
-.v-book.has-groove .v-book__cover::after {
-  position: absolute;
-  top: 0;
-  left: 3px;
-  height: 100%;
-  width: 10px;
-  box-shadow: 
-    inset 3px 0 2px hsla(0, 0%, 0%, 0.05),
-    inset -3px 0 2px hsla(0, 0%, 0%, 0.05);
-  content: '';
+.v-book.open-animation {
+  transform: translate3d(-140px, 0, 0) rotate3d(0, 1, 0, -180deg);
+  opacity: 0;
+  pointer-events: none;
 }
 
-.v-book.has-groove .v-book__cover.is-back::after {
-  left: auto;
-  right: 3px;
+/* ==========================================================================
+   STAGE 2: FLIPBOOK VIEW (4 PAGES TOTAL)
+   ========================================================================== */
+.flipbook-container {
+  display: none;
+  position: absolute;
+  width: 560px; /* Double page spread width */
+  height: 615px;
+  opacity: 0;
+  transition: opacity 800ms ease-in-out;
 }
+
+.flipbook-container.active {
+  display: block;
+  opacity: 1;
+}
+
+.ui-flipbook {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+}
+
+.ui-flipbook .page {
+  width: 280px;
+  height: 615px;
+  background-color: #fff;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Local Image Assignments */
+.page1 { background-image: url("page1.jpg"); }
+.page2 { background-image: url("page2.jpg"); }
+.page3 { background-image: url("page3.jpg"); }
+.page4 { background-image: url("page4.jpg"); }
+
+/* Navigation Arrows */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.nav-arrow:hover {
+  background-color: #ffffff;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.nav-arrow.prev { left: -60px; }
+.nav-arrow.next { right: -60px; }
