@@ -53,24 +53,24 @@ html, body {
   pointer-events: none;
 }
 
-/* Back Cover + Enhanced Shadows */
+/* Back Cover + Soft 45-Degree Shadows */
 .v-book__cover.is-back {
-  background-color: #e0e0e0; /* Fallback color */
+  background-color: #e0e0e0; 
   transform: rotate3d(0, 1, 0, -180deg) translate3d(0, 0, 6px);
   border-radius: 3px 1px 2px 2px;
   transition: box-shadow 480ms ease-in-out;
   
-  /* Resting Drop Shadow */
+  /* Resting State: Soft, diffuse shadow cast down-right at 45° */
   box-shadow: 
-    8px 8px 25px rgba(0, 0, 0, 0.4),
-    2px 2px 8px rgba(0, 0, 0, 0.25);
+    15px 15px 35px rgba(0, 0, 0, 0.22),
+    5px 5px 12px rgba(0, 0, 0, 0.12);
 }
 
-/* Deep Hover Shadow */
+/* Hovered State: Lifted, extra-fuzzy shadow cast down-left at 45° */
 .v-book:hover .v-book__cover.is-back {
   box-shadow: 
-    -35px 25px 50px rgba(0, 0, 0, 0.35),
-    -10px 10px 20px rgba(0, 0, 0, 0.2);
+    -30px 30px 60px rgba(0, 0, 0, 0.28),
+    -10px 10px 25px rgba(0, 0, 0, 0.15);
 }
 
 /* Spine */
