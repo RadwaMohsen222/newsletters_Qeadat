@@ -2,19 +2,235 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="stylecover.css">
-</head>
-<body style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>4-Page Interactive Book</title>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  
+  <!-- jQuery and Turn.js -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
 
-  <div class="v-book">
-    <!-- Set Front Cover Photo/GIF for Newsletter 1 -->
-    <div class="v-book__cover is-front" style="background-image: url('front.jpg');"></div>
-    
-    <div class="v-book__spine is-spine" style="background-image: url('split.jpg');"></div>
-    
-    <!-- Set Back Cover Photo/GIF for Newsletter 1 -->
-    <div class="v-book__cover is-back" style="background-image: url('back.jpg');"></div>
+  <style>
+    /* ==========================================================================
+       CONTAINER & FRAME SETUP
+       ========================================================================== */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: transparent;
+      font-family: 'Open Sans', Arial, sans-serif;
+    }
+
+    .book-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100vh;
+      perspective: 2000px;
+    }
+
+    /* ==========================================================================
+       STAGE 1: 3D SINGLE COVER VIEW
+       ========================================================================== */
+    .v-book {
+      width: 280px;
+      height: 615px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 1200ms cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms;
+      cursor: pointer;
+    }
+
+    .v-book:hover {
+      transform: translate3d(0, -10px, 50px) rotate3d(0, 1, 0, -15deg);
+    }
+
+    .v-book__cover {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-position: center center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      backface-visibility: hidden;
+      border-radius: 2px;
+    }
+
+    .v-book__cover.is-front {
+      background-image: url("page1.jpg");
+      transform: translate3d(0, 0, 14.7px);
+      box-shadow: 10px 10px 30px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+
+    .v-book__cover.is-back {
+      background-image: url("page4.jpg");
+      transform: rotate3d(0, 1, 0, 180deg) translate3d(0, 0, 14.7px);
+      box-shadow: -10px 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .v-book__spine {
+      position: absolute;
+      top: 0;
+      left: -14.7px;
+      width: 29.4px;
+      height: 100%;
+      transform: rotate3d(0, 1, 0, -90deg);
+      background-image: url("page1.jpg");
+      background-size: cover;
+      backface-visibility: hidden;
+    }
+
+    .v-book.open-animation {
+      transform: translate3d(-140px, 0, 0) rotate3d(0, 1, 0, -180deg);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       STAGE 2: FLIPBOOK VIEW (4 PAGES TOTAL)
+       ========================================================================== */
+    .flipbook-container {
+      display: none;
+      position: absolute;
+      width: 560px; /* Double page spread width */
+      height: 615px;
+      opacity: 0;
+      transition: opacity 800ms ease-in-out;
+    }
+
+    .flipbook-container.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .ui-flipbook {
+      width: 100%;
+      height: 100%;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+    }
+
+    .ui-flipbook .page {
+      width: 280px;
+      height: 615px;
+      background-color: #fff;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    /* Local Image Assignments */
+    .page1 { background-image: url("page1.jpg"); }
+    .page2 { background-image: url("page2.jpg"); }
+    .page3 { background-image: url("page3.jpg"); }
+    .page4 { background-image: url("page4.jpg"); }
+
+    /* Navigation Arrows */
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 44px;
+      height: 44px;
+      background-color: rgba(255, 255, 255, 0.85);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: background-color 0.2s, transform 0.2s;
+    }
+
+    .nav-arrow:hover {
+      background-color: #ffffff;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .nav-arrow.prev { left: -60px; }
+    .nav-arrow.next { right: -60px; }
+  </style>
+</head>
+<body>
+
+<div class="book-wrapper">
+  <!-- STAGE 1: 3D Single Cover -->
+  <div class="v-book" id="coverBook">
+    <div class="v-book__cover is-front"></div>
+    <div class="v-book__cover is-back"></div>
+    <div class="v-book__spine"></div>
   </div>
+
+  <!-- STAGE 2: Interactive 4-Page Flipbook -->
+  <div class="flipbook-container" id="flipbookContainer">
+    <div class="nav-arrow prev" id="prevBtn"><i class="fas fa-chevron-left"></i></div>
+    <div class="nav-arrow next" id="nextBtn"><i class="fas fa-chevron-right"></i></div>
+
+    <div id="flipbook" class="ui-flipbook">
+      <div class="page page1"></div>
+      <div class="page page2"></div>
+      <div class="page page3"></div>
+      <div class="page page4"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    var $cover = $('#coverBook');
+    var $flipbookContainer = $('#flipbookContainer');
+    var $flipbook = $('#flipbook');
+
+    // 1. Initialize Turn.js with exactly 4 pages
+    $flipbook.turn({
+      width: 560,
+      height: 615,
+      pages: 4,
+      autoCenter: true,
+      duration: 1000,
+      gradients: true,
+      elevation: 50
+    });
+
+    // 2. Click Cover: Open smoothly into pages 2 & 3
+    $cover.on('click', function() {
+      $cover.addClass('open-animation');
+      
+      setTimeout(function() {
+        $cover.hide();
+        $flipbookContainer.addClass('active');
+        $flipbook.turn('page', 2); // Opens directly to inside spread (Page 2 & 3)
+      }, 600);
+    });
+
+    // 3. Arrow Navigation Controls
+    $('#prevBtn').on('click', function() {
+      $flipbook.turn('previous');
+    });
+
+    $('#nextBtn').on('click', function() {
+      $flipbook.turn('next');
+    });
+
+    // 4. Auto-Close when reaching the last page (Back Cover) or going back to Page 1
+    $flipbook.bind('turned', function(event, page, view) {
+      if (page === 4 || page === 1) {
+        setTimeout(function() {
+          $flipbookContainer.removeClass('active');
+          $cover.show().removeClass('open-animation');
+          $flipbook.turn('page', 1);
+        }, 1000);
+      }
+    });
+  });
+</script>
 
 </body>
 </html>
