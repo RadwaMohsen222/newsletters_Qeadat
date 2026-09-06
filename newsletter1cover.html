@@ -1,250 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interactive Book</title>
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background-color: transparent;
-      font-family: 'Open Sans', Arial, sans-serif;
-    }
+    <title>Newsletter</title>
 
-    .book-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      height: 100vh;
-      perspective: 2000px;
-    }
-
-    /* 3D Cover Setup */
-    .v-book {
-      width: 280px;
-      height: 615px;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms;
-      cursor: pointer;
-    }
-
-    .v-book:hover {
-      transform: translate3d(0, -15px, 30px);
-    }
-
-    .v-book__cover {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-position: center center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      backface-visibility: hidden;
-      border-radius: 2px;
-    }
-
-    .v-book__cover.is-front {
-      background-image: url("front.jpg");
-      transform: translate3d(0, 0, 14.7px);
-      box-shadow: 10px 10px 30px rgba(0,0,0,0.3);
-      z-index: 10;
-    }
-
-    .v-book__cover.is-back {
-      background-image: url("back.jpg");
-      transform: rotate3d(0, 1, 0, 180deg) translate3d(0, 0, 14.7px);
-      box-shadow: -10px 10px 30px rgba(0,0,0,0.3);
-    }
-
-    .v-book__spine {
-      position: absolute;
-      top: 0;
-      left: -14.7px;
-      width: 29.4px;
-      height: 100%;
-      transform: rotate3d(0, 1, 0, -90deg);
-      background-image: url("spine.jpg");
-      background-size: cover;
-      backface-visibility: hidden;
-    }
-
-    .v-book.open-animation {
-      transform: translate3d(-140px, 0, 0) rotate3d(0, 1, 0, -180deg);
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    /* Flipbook Setup */
-    .flipbook-container {
-      display: none;
-      position: absolute;
-      width: 560px;
-      height: 615px;
-      opacity: 0;
-      transition: opacity 800ms ease-in-out;
-    }
-
-    .flipbook-container.active {
-      display: block;
-      opacity: 1;
-    }
-
-    .ui-flipbook {
-      width: 100%;
-      height: 100%;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.35);
-    }
-
-    .ui-flipbook .page {
-      width: 280px;
-      height: 615px;
-      background-color: #fff;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-    }
-
-    /* Page Assignments */
-    .page-front { background-image: url("front.jpg"); }
-    .page-1     { background-image: url("page1.jpg"); }
-    .page-2     { background-image: url("page2.jpg"); }
-    .page-3     { background-image: url("page3.jpg"); }
-    .page-4     { background-image: url("page4.jpg"); }
-    .page-back  { background-image: url("back.jpg"); }
-
-    /* Navigation Arrows */
-    .nav-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 44px;
-      height: 44px;
-      background-color: rgba(255, 255, 255, 0.85);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      z-index: 1000;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      transition: background-color 0.2s, transform 0.2s;
-    }
-
-    .nav-arrow:hover {
-      background-color: #ffffff;
-      transform: translateY(-50%) scale(1.1);
-    }
-
-    .nav-arrow.prev { left: -60px; }
-    .nav-arrow.next { right: -60px; }
-  </style>
+    <link rel="stylesheet" href="stylecover.css">
 </head>
+
 <body>
 
-<div class="book-wrapper">
-  <!-- 3D Standalone Cover -->
-  <div class="v-book" id="coverBook">
-    <div class="v-book__cover is-front"></div>
-    <div class="v-book__cover is-back"></div>
-    <div class="v-book__spine"></div>
-  </div>
+<div class="book-stage">
 
-  <!-- Flipbook Container -->
-  <div class="flipbook-container" id="flipbookContainer">
-    <div class="nav-arrow prev" id="prevBtn"><i class="fas fa-chevron-left"></i></div>
-    <div class="nav-arrow next" id="nextBtn"><i class="fas fa-chevron-right"></i></div>
+    <div id="book" class="book closed">
 
-    <div id="flipbook" class="ui-flipbook">
-      <!-- Page 1: Single Front Cover -->
-      <div class="hard page page-front"></div>
-      
-      <!-- Spread 1: Page 2 & Page 3 -->
-      <div class="page page-1"></div>
-      <div class="page page-2"></div>
-      
-      <!-- Spread 2: Page 4 & Page 5 -->
-      <div class="page page-3"></div>
-      <div class="page page-4"></div>
-      
-      <!-- Page 6: Single Back Cover -->
-      <div class="hard page page-back"></div>
+        <!-- LEFT SIDE -->
+        <div class="page fixed-page left-page">
+            <img id="leftPageImage" src="page1.jpg" alt="">
+        </div>
+
+        <!-- RIGHT SIDE UNDER THE FLIPPING PAGE -->
+        <div class="page fixed-page right-page">
+            <img id="rightPageImage" src="page2.jpg" alt="">
+        </div>
+
+
+        <!-- FRONT COVER -->
+        <div id="frontCover" class="flip-page front-cover">
+
+            <div class="face front-face">
+                <img src="front.jpg" alt="Front Cover">
+            </div>
+
+            <div class="face back-face">
+                <img src="page1.jpg" alt="">
+            </div>
+
+        </div>
+
+
+        <!-- PAGE 2 -> PAGE 3 FLIP -->
+        <div id="middleFlip" class="flip-page middle-flip">
+
+            <div class="face front-face">
+                <img src="page2.jpg" alt="">
+            </div>
+
+            <div class="face back-face">
+                <img src="page3.jpg" alt="">
+            </div>
+
+        </div>
+
+
+        <!-- PAGE 4 -> BACK COVER FLIP -->
+        <div id="backFlip" class="flip-page back-flip">
+
+            <div class="face front-face">
+                <img src="page4.jpg" alt="">
+            </div>
+
+            <div class="face back-face">
+                <img src="back.jpg" alt="Back Cover">
+            </div>
+
+        </div>
+
+
+        <!-- BOOK SPINE -->
+        <div id="spine" class="spine">
+            <img src="spine.jpg" alt="">
+        </div>
+
     </div>
-  </div>
+
+
+    <!-- ARROWS -->
+
+    <button id="previousButton" class="arrow previous" aria-label="Previous page">
+        &#10094;
+    </button>
+
+    <button id="nextButton" class="arrow next" aria-label="Next page">
+        &#10095;
+    </button>
+
 </div>
 
-<script>
-  $(document).ready(function() {
-    var $cover = $('#coverBook');
-    var $flipbookContainer = $('#flipbookContainer');
-    var $flipbook = $('#flipbook');
-    var autoCloseTimer = null;
 
-    // Initialize Turn.js
-    $flipbook.turn({
-      width: 560,
-      height: 615,
-      pages: 6,
-      page: 1,
-      autoCenter: true,
-      duration: 800,
-      gradients: true,
-      elevation: 50
-    });
-
-    // Opening from 3D cover directly into inside spread (pages 2 & 3)
-    $cover.on('click', function() {
-      $cover.addClass('open-animation');
-      
-      setTimeout(function() {
-        $cover.hide();
-        $flipbookContainer.addClass('active');
-        $flipbook.turn('page', 2); // Jump directly to inside spread
-      }, 500);
-    });
-
-    // Arrow Navigation
-    $('#prevBtn').on('click', function() {
-      if (autoCloseTimer) clearTimeout(autoCloseTimer);
-      $flipbook.turn('previous');
-    });
-
-    $('#nextBtn').on('click', function() {
-      if (autoCloseTimer) clearTimeout(autoCloseTimer);
-      $flipbook.turn('next');
-    });
-
-    // Sequence Monitoring & Auto-Reset Logic
-    $flipbook.bind('turned', function(event, page, view) {
-      if (autoCloseTimer) clearTimeout(autoCloseTimer);
-
-      // Reached back cover (Page 6) -> Wait 3 seconds, then return to 3D cover
-      if (page === 6) {
-        autoCloseTimer = setTimeout(function() {
-          $flipbookContainer.removeClass('active');
-          $cover.show().removeClass('open-animation');
-          $flipbook.turn('page', 1);
-        }, 3000);
-      }
-
-      // Returned to front cover inside flipbook (Page 1) -> Immediately return to 3D cover
-      if (page === 1) {
-        $flipbookContainer.removeClass('active');
-        $cover.show().removeClass('open-animation');
-      }
-    });
-  });
-</script>
+<script src="newsletter1cover.js"></script>
 
 </body>
 </html>
