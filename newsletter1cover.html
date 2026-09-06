@@ -32,7 +32,7 @@
       perspective: 2000px;
     }
 
-    /* 3D Cover Setup */
+    /* 3D Standalone Cover View */
     .v-book {
       width: 280px;
       height: 615px;
@@ -42,7 +42,6 @@
       cursor: pointer;
     }
 
-    /* Hover effect: Pop-up lift without rotation */
     .v-book:hover {
       transform: translate3d(0, -15px, 30px);
     }
@@ -119,7 +118,7 @@
       background-repeat: no-repeat;
     }
 
-    /* Exact Page Sequence Mapping */
+    /* Specific Page Backgrounds */
     .page-front { background-image: url("front.jpg"); }
     .page-1     { background-image: url("page1.jpg"); }
     .page-2     { background-image: url("page2.jpg"); }
@@ -170,12 +169,17 @@
     <div class="nav-arrow next" id="nextBtn"><i class="fas fa-chevron-right"></i></div>
 
     <div id="flipbook" class="ui-flipbook">
-      <div class="page page-front"></div>
+      <!-- Hard Single Front Cover -->
+      <div class="hard page page-front"></div>
+      
+      <!-- Inside Pages (2-Page Spreads) -->
       <div class="page page-1"></div>
       <div class="page page-2"></div>
       <div class="page page-3"></div>
       <div class="page page-4"></div>
-      <div class="page page-back"></div>
+      
+      <!-- Hard Single Back Cover -->
+      <div class="hard page page-back"></div>
     </div>
   </div>
 </div>
@@ -185,8 +189,9 @@
     var $cover = $('#coverBook');
     var $flipbookContainer = $('#flipbookContainer');
     var $flipbook = $('#flipbook');
+    var autoCloseTimer = null;
 
-    // Initialize Turn.js with exactly 6 elements (front, page1-4, back)
+    // Initialize Turn.js configured for hardcovers
     $flipbook.turn({
       width: 560,
       height: 615,
@@ -195,31 +200,46 @@
       autoCenter: true,
       duration: 800,
       gradients: true,
-      elevation: 50
+      elevation: 50,
+      display: 'double'
     });
 
-    // 1. Click Cover: Animates opening and jumps straight to page1 & page2
+    // 1. Click Cover: Open 3D animation and go straight to inside spread (Page 2 & 3)
     $cover.on('click', function() {
       $cover.addClass('open-animation');
       
       setTimeout(function() {
         $cover.hide();
         $flipbookContainer.addClass('active');
-        $flipbook.turn('page', 2); // Page 2 displays page1 (left) and page2 (right)
+        $flipbook.turn('page', 2); // Displays page1.jpg & page2.jpg
       }, 500);
     });
 
-    // 2. Navigation Controls
+    // 2. Navigation controls
     $('#prevBtn').on('click', function() {
+      if (autoCloseTimer) clearTimeout(autoCloseTimer);
       $flipbook.turn('previous');
     });
 
     $('#nextBtn').on('click', function() {
+      if (autoCloseTimer) clearTimeout(autoCloseTimer);
       $flipbook.turn('next');
     });
 
-    // 3. Reset to 3D cover ONLY if flipped back to front cover (Page 1)
+    // 3. Logic for front/back cover triggers & 3-second delay
     $flipbook.bind('turned', function(event, page, view) {
+      if (autoCloseTimer) clearTimeout(autoCloseTimer);
+
+      // If user reaches the Back Cover (Page 6)
+      if (page === 6) {
+        autoCloseTimer = setTimeout(function() {
+          $flipbookContainer.removeClass('active');
+          $cover.show().removeClass('open-animation');
+          $flipbook.turn('page', 1); // Reset internally back to page 1
+        }, 3000); // 3-second delay
+      }
+
+      // If user flips all the way back to Front Cover (Page 1)
       if (page === 1) {
         $flipbookContainer.removeClass('active');
         $cover.show().removeClass('open-animation');
