@@ -18,7 +18,7 @@ html, body {
 }
 
 /* ==========================================================================
-   STAGE 1: 3D COVER SETUP
+   STAGE 1: 3D STANDALONE COVER
    ========================================================================== */
 .v-book {
   width: 280px;
@@ -29,7 +29,7 @@ html, body {
   cursor: pointer;
 }
 
-/* Hover Effect: Pure Pop-Up Lift */
+/* Hover Lift Effect */
 .v-book:hover {
   transform: translate3d(0, -15px, 30px);
 }
@@ -70,7 +70,6 @@ html, body {
   backface-visibility: hidden;
 }
 
-/* Flip Open Transition Animation */
 .v-book.open-animation {
   transform: translate3d(-140px, 0, 0) rotate3d(0, 1, 0, -180deg);
   opacity: 0;
@@ -78,12 +77,12 @@ html, body {
 }
 
 /* ==========================================================================
-   STAGE 2: FLIPBOOK SPREAD SETUP
+   STAGE 2: FLIPBOOK VIEW (HARDCOVER SINGLE COVERS)
    ========================================================================== */
 .flipbook-container {
   display: none;
   position: absolute;
-  width: 560px; /* Double page spread width */
+  width: 560px;
   height: 615px;
   opacity: 0;
   transition: opacity 800ms ease-in-out;
@@ -109,7 +108,7 @@ html, body {
   background-repeat: no-repeat;
 }
 
-/* Sequence Mapping */
+/* Background Image Assignments */
 .page-front { background-image: url("front.jpg"); }
 .page-1     { background-image: url("page1.jpg"); }
 .page-2     { background-image: url("page2.jpg"); }
