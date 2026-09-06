@@ -118,13 +118,16 @@
       background-repeat: no-repeat;
     }
 
-    /* Specific Page Backgrounds */
+    /* Page Backgrounds */
     .page-front { background-image: url("front.jpg"); }
     .page-1     { background-image: url("page1.jpg"); }
     .page-2     { background-image: url("page2.jpg"); }
     .page-3     { background-image: url("page3.jpg"); }
     .page-4     { background-image: url("page4.jpg"); }
     .page-back  { background-image: url("back.jpg"); }
+
+    /* Hidden Buffer Pages */
+    .blank-page { background-color: #fff; }
 
     /* Navigation Arrows */
     .nav-arrow {
@@ -169,17 +172,21 @@
     <div class="nav-arrow next" id="nextBtn"><i class="fas fa-chevron-right"></i></div>
 
     <div id="flipbook" class="ui-flipbook">
-      <!-- Hard Single Front Cover -->
+      <!-- Page 1: Single Front Cover -->
       <div class="hard page page-front"></div>
       
-      <!-- Inside Pages (2-Page Spreads) -->
+      <!-- Inside Spreads -->
       <div class="page page-1"></div>
       <div class="page page-2"></div>
       <div class="page page-3"></div>
       <div class="page page-4"></div>
       
-      <!-- Hard Single Back Cover -->
+      <!-- Inside Back Cover Lining (Hidden Buffer) -->
+      <div class="page blank-page"></div>
+      
+      <!-- Page 7/8: Single Back Cover -->
       <div class="hard page page-back"></div>
+      <div class="hard page blank-page"></div>
     </div>
   </div>
 </div>
@@ -191,11 +198,11 @@
     var $flipbook = $('#flipbook');
     var autoCloseTimer = null;
 
-    // Initialize Turn.js configured for hardcovers
+    // Initialize Turn.js with 8 total slots for proper hardcover centering
     $flipbook.turn({
       width: 560,
       height: 615,
-      pages: 6,
+      pages: 8,
       page: 1,
       autoCenter: true,
       duration: 800,
@@ -204,18 +211,18 @@
       display: 'double'
     });
 
-    // 1. Click Cover: Open 3D animation and go straight to inside spread (Page 2 & 3)
+    // 1. Click Cover: Open 3D animation and jump directly to pages 1 & 2
     $cover.on('click', function() {
       $cover.addClass('open-animation');
       
       setTimeout(function() {
         $cover.hide();
         $flipbookContainer.addClass('active');
-        $flipbook.turn('page', 2); // Displays page1.jpg & page2.jpg
+        $flipbook.turn('page', 2); // Shows page1.jpg (left) & page2.jpg (right)
       }, 500);
     });
 
-    // 2. Navigation controls
+    // 2. Arrow Controls
     $('#prevBtn').on('click', function() {
       if (autoCloseTimer) clearTimeout(autoCloseTimer);
       $flipbook.turn('previous');
@@ -226,20 +233,20 @@
       $flipbook.turn('next');
     });
 
-    // 3. Logic for front/back cover triggers & 3-second delay
+    // 3. Logic for standalone back cover & 3-second auto close
     $flipbook.bind('turned', function(event, page, view) {
       if (autoCloseTimer) clearTimeout(autoCloseTimer);
 
-      // If user reaches the Back Cover (Page 6)
-      if (page === 6) {
+      // Reaching the Back Cover (Page 7)
+      if (page >= 7) {
         autoCloseTimer = setTimeout(function() {
           $flipbookContainer.removeClass('active');
           $cover.show().removeClass('open-animation');
-          $flipbook.turn('page', 1); // Reset internally back to page 1
-        }, 3000); // 3-second delay
+          $flipbook.turn('page', 1);
+        }, 3000);
       }
 
-      // If user flips all the way back to Front Cover (Page 1)
+      // Flipping all the way back to Front Cover (Page 1)
       if (page === 1) {
         $flipbookContainer.removeClass('active');
         $cover.show().removeClass('open-animation');
