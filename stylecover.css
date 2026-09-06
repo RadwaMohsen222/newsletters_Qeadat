@@ -1,143 +1,425 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background-color: transparent;
-  font-family: 'Open Sans', Arial, sans-serif;
+* {
+    box-sizing: border-box;
 }
 
-.book-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
-  perspective: 2000px;
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
 }
 
-/* ==========================================================================
-   3D STANDALONE COVER
-   ========================================================================== */
-.v-book {
-  width: 280px;
-  height: 615px;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 600ms cubic-bezier(0.4, 0, 0.2, 1), opacity 500ms;
-  cursor: pointer;
+body {
+    background: #dcdcdc;
+    overflow: hidden;
 }
 
-/* Hover effect: Pop-up lift without rotation */
-.v-book:hover {
-  transform: translate3d(0, -15px, 30px);
+
+/* =========================================
+   STAGE
+========================================= */
+
+.book-stage {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    perspective: 2400px;
+
+    position: relative;
 }
 
-.v-book__cover {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  backface-visibility: hidden;
-  border-radius: 2px;
+
+/*
+Original image ratio:
+466 x 1024
+
+The CSS keeps that ratio while scaling
+the book to fit the screen.
+*/
+
+.book {
+    --page-height: min(82vh, 780px);
+    --page-width: calc(var(--page-height) * 466 / 1024);
+
+    width: calc(var(--page-width) * 2);
+    height: var(--page-height);
+
+    position: relative;
+
+    transform-style: preserve-3d;
+
+    /*
+    Closed book starts half a page left,
+    so the single cover is centered.
+    */
+    transform: translateX(calc(var(--page-width) / -2));
+
+    transition:
+        transform 800ms cubic-bezier(.22,.75,.25,1),
+        filter 350ms ease;
+
+    filter:
+        drop-shadow(0 20px 18px rgba(0, 0, 0, 0.20))
+        drop-shadow(0 7px 7px rgba(0, 0, 0, 0.16));
 }
 
-.v-book__cover.is-front {
-  background-image: url("front.jpg");
-  transform: translate3d(0, 0, 14.7px);
-  box-shadow: 10px 10px 30px rgba(0,0,0,0.3);
-  z-index: 10;
+
+/* little pop when hovering closed cover */
+
+.book.closed:hover {
+    transform:
+        translateX(calc(var(--page-width) / -2))
+        translateY(-12px)
+        scale(1.015);
+
+    filter:
+        drop-shadow(0 30px 24px rgba(0, 0, 0, 0.25))
+        drop-shadow(0 10px 10px rgba(0, 0, 0, 0.16));
+
+    cursor: pointer;
 }
 
-.v-book__cover.is-back {
-  background-image: url("back.jpg");
-  transform: rotate3d(0, 1, 0, 180deg) translate3d(0, 0, 14.7px);
-  box-shadow: -10px 10px 30px rgba(0,0,0,0.3);
+
+/* when book is open */
+
+.book.open {
+    transform: translateX(0);
 }
 
-.v-book__spine {
-  position: absolute;
-  top: 0;
-  left: -14.7px;
-  width: 29.4px;
-  height: 100%;
-  transform: rotate3d(0, 1, 0, -90deg);
-  background-image: url("spine.jpg");
-  background-size: cover;
-  backface-visibility: hidden;
+
+/* closed from the BACK */
+
+.book.showing-back {
+    transform: translateX(calc(var(--page-width) / 2));
 }
 
-.v-book.open-animation {
-  transform: translate3d(-140px, 0, 0) rotate3d(0, 1, 0, -180deg);
-  opacity: 0;
-  pointer-events: none;
+
+/* =========================================
+   PAGES
+========================================= */
+
+.page,
+.flip-page {
+    position: absolute;
+
+    width: var(--page-width);
+    height: var(--page-height);
+
+    top: 0;
+
+    background: white;
 }
 
-/* ==========================================================================
-   FLIPBOOK CONTAINER & PAGES
-   ========================================================================== */
-.flipbook-container {
-  display: none;
-  position: absolute;
-  width: 560px;
-  height: 615px;
-  opacity: 0;
-  transition: opacity 800ms ease-in-out;
+
+.page img,
+.face img,
+.spine img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: fill;
+
+    user-select: none;
+    pointer-events: none;
 }
 
-.flipbook-container.active {
-  display: block;
-  opacity: 1;
+
+/* Static spread pages */
+
+.left-page {
+    left: 0;
+
+    box-shadow:
+        inset -12px 0 18px rgba(0, 0, 0, 0.08),
+        0 10px 20px rgba(0, 0, 0, 0.10);
 }
 
-.ui-flipbook {
-  width: 100%;
-  height: 100%;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+
+.right-page {
+    left: var(--page-width);
+
+    box-shadow:
+        inset 12px 0 18px rgba(0, 0, 0, 0.07),
+        0 10px 20px rgba(0, 0, 0, 0.10);
 }
 
-.ui-flipbook .page {
-  width: 280px;
-  height: 615px;
-  background-color: #fff;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+
+/* =========================================
+   FLIPPING PAGE
+========================================= */
+
+.flip-page {
+    left: var(--page-width);
+
+    transform-origin: left center;
+
+    transform-style: preserve-3d;
+
+    transition:
+        transform 1000ms cubic-bezier(.645,.045,.355,1);
+
+    z-index: 10;
 }
 
-/* Specific Image Assignments */
-.page-front { background-image: url("front.jpg"); }
-.page-1     { background-image: url("page1.jpg"); }
-.page-2     { background-image: url("page2.jpg"); }
-.page-3     { background-image: url("page3.jpg"); }
-.page-4     { background-image: url("page4.jpg"); }
-.page-back  { background-image: url("back.jpg"); }
 
-/* Navigation Buttons */
-.nav-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
-  background-color: rgba(255, 255, 255, 0.85);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  z-index: 1000;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  transition: background-color 0.2s, transform 0.2s;
+.face {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    top: 0;
+    left: 0;
+
+    backface-visibility: hidden;
+
+    overflow: hidden;
+
+    background: white;
 }
 
-.nav-arrow:hover {
-  background-color: #ffffff;
-  transform: translateY(-50%) scale(1.1);
+
+/* front side */
+
+.front-face {
+    transform: rotateY(0deg);
+
+    box-shadow:
+        inset 8px 0 14px rgba(0, 0, 0, 0.08),
+        8px 8px 18px rgba(0, 0, 0, 0.16);
 }
 
-.nav-arrow.prev { left: -60px; }
-.nav-arrow.next { right: -60px; }
+
+/* back side */
+
+.back-face {
+    transform: rotateY(180deg);
+
+    box-shadow:
+        inset -8px 0 14px rgba(0, 0, 0, 0.08),
+        -8px 8px 18px rgba(0, 0, 0, 0.14);
+}
+
+
+/* Actual turning movement */
+
+.flip-page.flipped {
+    transform: rotateY(-180deg);
+}
+
+
+/* =========================================
+   COVER
+========================================= */
+
+.front-cover {
+    z-index: 30;
+}
+
+
+/* tiny thickness around covers */
+
+.front-cover .face,
+.back-flip .back-face {
+    box-shadow:
+        0 0 0 1px rgba(0, 0, 0, 0.08),
+        8px 10px 22px rgba(0, 0, 0, 0.20);
+}
+
+
+/* =========================================
+   SECOND FLIP
+========================================= */
+
+.middle-flip {
+    z-index: 20;
+    visibility: hidden;
+}
+
+.middle-flip.active {
+    visibility: visible;
+}
+
+
+/* =========================================
+   BACK COVER FLIP
+========================================= */
+
+.back-flip {
+    z-index: 15;
+    visibility: hidden;
+}
+
+.back-flip.active {
+    visibility: visible;
+}
+
+
+/* =========================================
+   SPINE
+========================================= */
+
+.spine {
+    position: absolute;
+
+    width: calc(var(--page-height) * 49 / 1024);
+    height: var(--page-height);
+
+    left: calc(
+        var(--page-width) -
+        (var(--page-height) * 49 / 1024 / 2)
+    );
+
+    top: 0;
+
+    transform:
+        rotateY(90deg)
+        translateZ(2px);
+
+    transform-origin: center;
+
+    opacity: 0;
+
+    z-index: 40;
+
+    pointer-events: none;
+
+    transition: opacity 250ms ease;
+
+    filter: brightness(.88);
+}
+
+
+.spine.visible {
+    opacity: 1;
+}
+
+
+/* centre crease shadow */
+
+.book.open::after {
+    content: "";
+
+    position: absolute;
+
+    width: 22px;
+    height: 100%;
+
+    left: calc(50% - 11px);
+    top: 0;
+
+    pointer-events: none;
+
+    z-index: 50;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(0, 0, 0, 0.11),
+            rgba(0, 0, 0, 0.03),
+            transparent
+        );
+}
+
+
+/* =========================================
+   ARROWS
+========================================= */
+
+.arrow {
+    position: absolute;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 55px;
+    height: 80px;
+
+    border: 0;
+
+    background: transparent;
+
+    font-size: 45px;
+
+    font-family: Arial, sans-serif;
+
+    font-weight: 200;
+
+    cursor: pointer;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+        opacity 250ms ease,
+        transform 200ms ease;
+
+    z-index: 100;
+
+    color: rgba(0, 0, 0, 0.45);
+}
+
+
+.arrow.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+
+.arrow:hover {
+    color: black;
+}
+
+
+.previous {
+    left: 5vw;
+}
+
+
+.next {
+    right: 5vw;
+}
+
+
+.previous:hover {
+    transform: translateY(-50%) translateX(-5px);
+}
+
+
+.next:hover {
+    transform: translateY(-50%) translateX(5px);
+}
+
+
+/* =========================================
+   SMALL SCREENS
+========================================= */
+
+@media (max-width: 700px) {
+
+    .book {
+        --page-height: min(70vh, 650px);
+    }
+
+    .arrow {
+        width: 40px;
+        font-size: 32px;
+    }
+
+    .previous {
+        left: 5px;
+    }
+
+    .next {
+        right: 5px;
+    }
+}
