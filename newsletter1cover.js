@@ -1,50 +1,93 @@
-window.FlipbookSettings = {
+$(document).ready(function () {
 
-    options: {
+    var flipbook = $("#flipbook");
+
+
+    /* =========================
+       START FLIPBOOK
+    ========================= */
+
+    flipbook.turn({
 
         width: 932,
         height: 1024,
 
         display: "double",
-        page: 1,
+
         pages: 7,
 
-        autoCenter: true,
-        animatedAutoCenter: true,
+        page: 1,
 
         duration: 600,
-        elevation: "10%",
+
+        autoCenter: true,
 
         gradients: true,
-        smartFlip: true,
-        swipe: true,
 
-        responsive: true,
-        autoScaleContent: true,
+        elevation: 10,
 
         acceleration: true,
-        hover: true,
 
-        turnCorners: "l,r",
-        pageMargin: "0px 0px",
+        direction: "ltr",
 
         when: {
 
+            turning: function (event, page) {
+
+                console.log("Turning to page:", page);
+
+            },
+
             turned: function (event, page) {
 
-                // When the back cover is reached,
-                // wait 2 seconds and restart from the front.
+                console.log("Currently on page:", page);
+
+
+                /*
+                 * BACK COVER
+                 *
+                 * Page 7 is the back cover.
+                 *
+                 * Wait 2 seconds,
+                 * then return to page 1.
+                 */
 
                 if (page === 7) {
 
                     setTimeout(function () {
 
-                        $("#flipbook").turn("page", 1);
+                        flipbook.turn("page", 1);
 
                     }, 2000);
 
                 }
+
             }
+
         }
-    }
-};
+
+    });
+
+
+    /* =========================
+       NEXT BUTTON
+    ========================= */
+
+    $("#next").click(function () {
+
+        flipbook.turn("next");
+
+    });
+
+
+    /* =========================
+       PREVIOUS BUTTON
+    ========================= */
+
+    $("#previous").click(function () {
+
+        flipbook.turn("previous");
+
+    });
+
+});
