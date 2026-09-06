@@ -24,47 +24,42 @@ body {
 }
 
 /* ==========================================================================
-   THE BOOK CONTAINER & 3D SHADOW STATES
-   Aspect Ratio: 466px x 1024px
+   THE BOOK CONTAINER & 3D HOVER TRANSITIONS
+   Cover Ratio: 466px x 1024px
+   Spine Ratio: 49px x 1024px (~29.4px wide)
    ========================================================================== */
 
 .v-book {
   flex-shrink: 0;
   margin: 3.618rem;
-  width: 280px;            /* Width scaled proportionately to 466px */
-  height: 615px;           /* Height scaled proportionately to 1024px */
+  width: 280px;            /* Width proportional to 466px */
+  height: 615px;           /* Height proportional to 1024px */
   transform-style: preserve-3d;
-  transition: all 480ms ease-in-out;
+  /* Set 1.8s duration for a smooth, slow flipping motion */
+  transition: transform 1800ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
 }
 
-/* --- State 1: Default (Not Lifted) Shadow --- */
+/* --- Base / Default State Shadow --- */
 .v-book .v-book__cover.is-back {
   box-shadow: 3px 3px 15px hsla(0, 0%, 0%, 0.25);
+  transition: box-shadow 1800ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* --- State 2: Hover (Tilted) Shadow --- */
-.v-book:not(.is-flipped):hover {
-  transform: translate3d(0, 0, 0) rotate3d(0, 1, 0, 25deg);
-}
-
-.v-book:not(.is-flipped):hover .v-book__cover.is-back {
-  box-shadow: 15px 8px 20px hsla(0, 0%, 0%, 0.25);
-}
-
-/* --- State 3: Click/Active (Lifted) Shadow --- */
-.v-book:not(.is-flipped):active {
-  transform: translate3d(0, 0, 140px) rotate3d(0, 1, 0, 25deg);
+/* --- Slow Flip & Shadow on Mouse Hover --- */
+.v-book:hover {
+  /* Elevates slightly in 3D space and flips 180 degrees slowly */
+  transform: translate3d(0, 0, 140px) rotate3d(0, 1, 0, 180deg);
   z-index: 100;
-  user-select: none;
 }
 
-.v-book:not(.is-flipped):active .v-book__cover.is-back {
-  box-shadow: 30px 16px 40px hsla(0, 0%, 0%, 0.15);
+.v-book:hover .v-book__cover.is-back {
+  /* Switches to flipped shadow during and after the hover flip */
+  box-shadow: -30px 16px 40px hsla(0, 0%, 0%, 0.15);
 }
 
-/* --- State 4: Flipped Shadow --- */
+/* Manual toggle class support (if controlled via JavaScript click) */
 .v-book.is-flipped {
   transform: translate3d(0, 0, 140px) rotate3d(0, 1, 0, 180deg);
 }
@@ -74,7 +69,7 @@ body {
 }
 
 /* ==========================================================================
-   BOOK COVERS & DETAILS
+   BOOK COVERS & SPINE
    ========================================================================== */
 
 .v-book__cover {
@@ -86,7 +81,6 @@ body {
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  transition: box-shadow 480ms ease-in-out;
 }
 
 .v-book__cover.is-front {
@@ -94,27 +88,28 @@ body {
   justify-content: center;
   align-items: center;
   transform-origin: 0% 50%;
-  transform: translate3d(0, 0, 5px);
-  transition: transform 480ms ease-in-out;
+  transform: translate3d(0, 0, 14.7px); /* Half of spine width (29.4px / 2) */
   z-index: 10;
   border-radius: 1px 3px 2px 1px;
 }
 
 .v-book__cover.is-back {
-  transform: rotate3d(0, 1, 0, -180deg) translate3d(0, 0, 6px);
+  transform: rotate3d(0, 1, 0, -180deg) translate3d(0, 0, 14.7px); /* Half of spine width */
   background-color: white;
   border-radius: 3px 1px 2px 2px;
 }
 
-/* Spine Elements */
+/* --- Spine Element (49 x 1024 Ratio) --- */
 .v-book__spine {
   position: absolute;
   top: 0;
-  left: -7px;
-  width: 14px;
+  left: -14.7px;          /* Offset by half the spine width */
+  width: 29.4px;          /* Scaled from 49px to match the 280px book width */
   height: 100%;
   transform: rotate3d(0, 1, 0, -90deg);
   background-color: white;
+  background-position: center center;
+  background-size: cover;
 }
 
 /* Groove Effect */
@@ -135,7 +130,7 @@ body {
   right: 3px;
 }
 
-/* Optional Obi Band */
+/* Optional Obi Band Adjusted for New Spine Width */
 .v-book__obi {
   position: absolute;
   left: -1%;
@@ -145,21 +140,21 @@ body {
   height: 80px;
   background-color: hsla(0, 0%, 100%, 0.75);
   box-shadow: 0 2px 3px 0 hsla(0, 0%, 0%, 0.1);
-  transform: translate3d(0, 0, 6px);
+  transform: translate3d(0, 0, 15px);
   transform-style: inherit;
   z-index: 1;
   border-radius: 1px;
 }
 
 .v-book__obi.is-back {
-  transform: rotate3d(0, 1, 0, -180deg) translate3d(0, 0, 6px);
+  transform: rotate3d(0, 1, 0, -180deg) translate3d(0, 0, 15px);
 }
 
 .v-book__obi::after {
   position: absolute;
   top: 0;
-  left: -7px;
-  width: 14px;
+  left: -14.7px;
+  width: 29.4px;
   height: 100%;
   transform: rotate3d(0, 1, 0, -90deg);
   background-color: inherit;
