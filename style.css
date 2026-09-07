@@ -20,6 +20,7 @@ html, body {
 
 #flipbook {
     position: relative;
+    transition: margin-left 0.3s ease;
 }
 
 #flipbook .page {
@@ -27,11 +28,4 @@ html, body {
     background-repeat: no-repeat;
     background-position: center;
     background-color: #ffffff;
-}
-
-/* Stops ghost white boxes from rendering on empty turn.js slots */
-#flipbook .p0,
-#flipbook .p7 {
-    background: transparent !important;
-    box-shadow: none !important;
 }
