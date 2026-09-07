@@ -1,24 +1,31 @@
 html, body {
     margin: 0;
     padding: 0;
-    width: fit-content;
-    height: fit-content;
-    background-color: transparent; 
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow: hidden; 
 }
 
 .book-wrapper {
-    width: fit-content;
-    height: fit-content;
-    display: inline-block;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #flipbook {
-    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 #flipbook .page {
+    /* Guarantees images fill the exact page dimensions without distortion */
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
+    background-color: #ffffff;
 }
