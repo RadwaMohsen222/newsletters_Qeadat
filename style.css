@@ -18,8 +18,9 @@ html, body {
     align-items: center;
 }
 
+/* Outer drop shadow under the book is removed */
 #flipbook {
-    box-shadow: none !important; /* Removes container shadow */
+    box-shadow: none;
 }
 
 #flipbook .page {
@@ -27,5 +28,4 @@ html, body {
     background-repeat: no-repeat;
     background-position: center;
     background-color: #ffffff;
-    box-shadow: none !important; /* Removes page border shadows */
 }
