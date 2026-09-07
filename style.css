@@ -25,9 +25,9 @@ html, body {
 }
 
 #flipbook .page {
-    /* Guarantees images fill the exact page dimensions without distortion */
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
     background-color: #ffffff;
+    box-shadow: none !important;
 }
