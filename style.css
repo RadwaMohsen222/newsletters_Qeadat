@@ -18,12 +18,12 @@ html, body {
     align-items: center;
 }
 
-/* Outer drop shadow under the book is removed */
 #flipbook {
-    box-shadow: none;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.0);
 }
 
 #flipbook .page {
+    /* Guarantees images fill the exact page dimensions without distortion */
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
