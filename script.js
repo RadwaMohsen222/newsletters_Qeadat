@@ -40,8 +40,8 @@ $(document).ready(function() {
                 height: config.height,
                 display: config.display,
                 autoCenter: true, // Centers page 1 horizontally
-                gradients: false, // Disabled to eliminate animated page shadows
-                elevation: 0      // Set to 0 to remove 3D lift shadows
+                gradients: true,
+                elevation: 50
             });
             $flipbook.data().done = true;
         } else {
