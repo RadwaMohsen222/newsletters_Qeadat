@@ -25,9 +25,9 @@ $(document).ready(function() {
                 width: Math.round(width),
                 height: Math.round(height),
                 display: displayMode,
-                direction: 'rtl', // Enables Right-to-Left Arabic page turning
+                direction: 'rtl', // Right-To-Left page turning for Arabic
                 autoCenter: true,
-                gradients: true,
+                gradients: false, // Disabled canvas gradients to remove white page overlays
                 elevation: 50
             });
             $flipbook.data().done = true;
