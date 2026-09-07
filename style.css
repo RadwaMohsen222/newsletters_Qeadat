@@ -1,42 +1,58 @@
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #ffffff; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden; 
-}
+$(document).ready(function() {
+    var $flipbook = $("#flipbook");
 
-.book-wrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    function getBookConfig() {
+        var winW = $(window).width();
+        var winH = $(window).height();
 
-#flipbook {
-    position: relative;
-    transition: margin-left 0.3s ease;
-    box-shadow: none !important;
-}
+        // Mobile / narrow screen detection
+        var isMobile = winW < 650;
+        var displayMode = isMobile ? 'single' : 'double';
 
-#flipbook .page {
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    box-shadow: none !important;
-}
+        // Precise ratios: 466/1024 for single page, 932/1024 for double spread
+        var targetRatio = isMobile ? (466 / 1024) : (932 / 1024);
 
-/* Force turn.js internal shadow overlays and empty cover slots to stay transparent */
-#flipbook .shadow,
-#flipbook .gradient,
-#flipbook .p0,
-#flipbook .p7 {
-    display: none !important;
-    background: transparent !important;
-    box-shadow: none !important;
-}
+        var maxW = winW * 0.95;
+        var maxH = winH * 0.95;
+
+        var width = maxW;
+        var height = width / targetRatio;
+
+        // Scale down proportionately if height exceeds viewport
+        if (height > maxH) {
+            height = maxH;
+            width = height * targetRatio;
+        }
+
+        return {
+            width: Math.round(width),
+            height: Math.round(height),
+            display: displayMode
+        };
+    }
+
+    function applyLayout() {
+        var config = getBookConfig();
+
+        if (!$flipbook.data().done) {
+            $flipbook.turn({
+                width: config.width,
+                height: config.height,
+                display: config.display,
+                autoCenter: true, // Centers page 1 horizontally
+                gradients: true,
+                elevation: 50
+            });
+            $flipbook.data().done = true;
+        } else {
+            $flipbook.turn("display", config.display);
+            $flipbook.turn("size", config.width, config.height);
+        }
+    }
+
+    applyLayout();
+
+    $(window).on("resize", function() {
+        applyLayout();
+    });
+});
