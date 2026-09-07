@@ -1,6 +1,5 @@
 $(document).ready(function() {
     var $flipbook = $("#flipbook");
-    var totalPages = 6; // Total pages in DOM
 
     function initFlipbook() {
         var winW = $(window).width();
@@ -29,10 +28,10 @@ $(document).ready(function() {
                 width: w,
                 height: h,
                 display: displayMode,
-                page: totalPages, // Forces the book to open directly on front.jpg
+                direction: 'rtl', // Native turn.js Arabic flipping
                 autoCenter: true,
-                gradients: true,
-                elevation: 50
+                gradients: false, // Disables shadow gradient overlays
+                elevation: 0      // Removes 3D peel shadows
             });
             $flipbook.data().done = true;
         } else {
