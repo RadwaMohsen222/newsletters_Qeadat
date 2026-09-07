@@ -1,10 +1,13 @@
-body {
-    background-color: #ffffff; 
+html, body {
     margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff; 
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    /* This strictly prevents the scrollbar from ever appearing */
     overflow: hidden; 
 }
 
@@ -14,13 +17,11 @@ body {
     align-items: center;
 }
 
-/* We removed the box-shadow from #flipbook so the empty space is invisible */
 #flipbook {
     transition: margin-left 0.4s ease-in-out;
 }
 
 #flipbook .page {
-    background-color: white;
-    /* This adds the soft, small shadow under the visible pages only */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); 
+    /* Removed background-color and box-shadow to eliminate the white ghost page completely */
+    background-size: 100% 100%;
 }
