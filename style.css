@@ -1,48 +1,31 @@
-$(document).ready(function() {
-    var $flipbook = $("#flipbook");
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; 
+}
 
-    function initFlipbook() {
-        var winW = $(window).width();
-        var winH = $(window).height();
+.book-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        var isMobile = winW < 650;
-        var displayMode = isMobile ? 'single' : 'double';
-        var targetRatio = isMobile ? (466 / 1024) : (932 / 1024);
+#flipbook {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
 
-        var maxW = winW * 0.9;
-        var maxH = winH * 0.9;
-
-        var width = maxW;
-        var height = width / targetRatio;
-
-        if (height > maxH) {
-            height = maxH;
-            width = height * targetRatio;
-        }
-
-        var w = Math.round(width);
-        var h = Math.round(height);
-
-        if (!$flipbook.data().done) {
-            $flipbook.turn({
-                width: w,
-                height: h,
-                display: displayMode,
-                direction: 'rtl',
-                autoCenter: true,
-                gradients: false,
-                elevation: 0
-            });
-            $flipbook.data().done = true;
-        } else {
-            $flipbook.turn("display", displayMode);
-            $flipbook.turn("size", w, h);
-        }
-    }
-
-    initFlipbook();
-
-    $(window).on("resize", function() {
-        initFlipbook();
-    });
-});
+#flipbook .page {
+    /* Guarantees images fill the exact page dimensions without distortion */
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #ffffff;
+}
