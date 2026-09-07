@@ -28,7 +28,6 @@ $(document).ready(function() {
                 width: w,
                 height: h,
                 display: displayMode,
-                direction: 'rtl', // Handled strictly in JS to avoid CSS position mirroring
                 autoCenter: true,
                 gradients: true,
                 elevation: 50
