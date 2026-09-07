@@ -1,48 +1,58 @@
 $(document).ready(function() {
     var $flipbook = $("#flipbook");
 
-    function initFlipbook() {
+    function getBookConfig() {
         var winW = $(window).width();
         var winH = $(window).height();
 
+        // Mobile / narrow screen detection
         var isMobile = winW < 650;
         var displayMode = isMobile ? 'single' : 'double';
+
+        // Precise ratios: 466/1024 for single page, 932/1024 for double spread
         var targetRatio = isMobile ? (466 / 1024) : (932 / 1024);
 
-        var maxW = winW * 0.9;
-        var maxH = winH * 0.9;
+        var maxW = winW * 0.95;
+        var maxH = winH * 0.95;
 
         var width = maxW;
         var height = width / targetRatio;
 
+        // Scale down proportionately if height exceeds viewport
         if (height > maxH) {
             height = maxH;
             width = height * targetRatio;
         }
 
-        var w = Math.round(width);
-        var h = Math.round(height);
+        return {
+            width: Math.round(width),
+            height: Math.round(height),
+            display: displayMode
+        };
+    }
+
+    function applyLayout() {
+        var config = getBookConfig();
 
         if (!$flipbook.data().done) {
             $flipbook.turn({
-                width: w,
-                height: h,
-                display: displayMode,
-                page: 6,           // Forces the book to open directly on front.jpg
-                autoCenter: true,
-                gradients: false,  // Disables page flip shadows
-                elevation: 0       // Disables 3D shadow depth
+                width: config.width,
+                height: config.height,
+                display: config.display,
+                autoCenter: true, // Centers page 1 horizontally
+                gradients: true,
+                elevation: 50
             });
             $flipbook.data().done = true;
         } else {
-            $flipbook.turn("display", displayMode);
-            $flipbook.turn("size", w, h);
+            $flipbook.turn("display", config.display);
+            $flipbook.turn("size", config.width, config.height);
         }
     }
 
-    initFlipbook();
+    applyLayout();
 
     $(window).on("resize", function() {
-        initFlipbook();
+        applyLayout();
     });
 });
