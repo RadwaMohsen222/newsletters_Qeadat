@@ -9,21 +9,19 @@ $(document).ready(function() {
         var width, height;
 
         if (isMobile) {
-            // Single page mode for mobile
-            width = Math.min(winWidth * 0.85, 360);
-            height = width * (1024 / 466); // Keep original 466x1024 aspect ratio
+            width = Math.min(winWidth * 0.9, 360);
+            height = width * (1024 / 466);
 
-            if (height > winHeight * 0.85) {
-                height = winHeight * 0.85;
+            if (height > winHeight * 0.9) {
+                height = winHeight * 0.9;
                 width = height * (466 / 1024);
             }
         } else {
-            // Double page mode for desktop
-            width = Math.min(winWidth * 0.9, 700);
-            height = width * (1024 / 932); // Keep original double aspect ratio
+            width = Math.min(winWidth, 700);
+            height = width * (1024 / 932);
 
-            if (height > winHeight * 0.85) {
-                height = winHeight * 0.85;
+            if (height > winHeight) {
+                height = winHeight;
                 width = height * (932 / 1024);
             }
         }
@@ -41,7 +39,7 @@ $(document).ready(function() {
         width: initialSize.width,
         height: initialSize.height,
         display: initialSize.display,
-        autoCenter: true,
+        autoCenter: false, // Disabled so page boundaries fit tightly
         gradients: true,
         elevation: 50
     });
