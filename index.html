@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,11 +10,18 @@
 
     <div class="book-wrapper">
         <div id="flipbook">
+            <!-- Front Cover (Stays First) -->
             <div style="background-image: url('front.jpg');"></div>
-            <div style="background-image: url('page1.jpg');"></div>
-            <div style="background-image: url('page2.jpg');"></div>
-            <div style="background-image: url('page3.jpg');"></div>
-            <div style="background-image: url('page4.jpg');"></div>
+
+            <!-- First Spread: Swapped so page1 lands on the RIGHT -->
+            <div style="background-image: url('page2.jpg');"></div> <!-- Left Page -->
+            <div style="background-image: url('page1.jpg');"></div> <!-- Right Page (Read First) -->
+
+            <!-- Second Spread: Swapped so page3 lands on the RIGHT -->
+            <div style="background-image: url('page4.jpg');"></div> <!-- Left Page -->
+            <div style="background-image: url('page3.jpg');"></div> <!-- Right Page (Read First) -->
+
+            <!-- Back Cover (Stays Last) -->
             <div style="background-image: url('back.jpg');"></div>
         </div>
     </div>
