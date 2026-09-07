@@ -1,62 +1,38 @@
 body {
-  overflow: hidden;
-  background-color: #f2f2f2;
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
+    /* A slightly darker background makes the white margin stand out */
+    background-color: #e5e5e5; 
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-/* Centered Viewport */
-.flipbook-viewport {
-  overflow: hidden;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.book-wrapper {
+    background-color: #ffffff;
+    padding: 50px; /* The white margin around the book */
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    /* Prevents the book from being too big on smaller screens */
+    max-width: 90vw; 
+    max-height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; 
 }
 
-.flipbook-viewport .container {
-  width: 932px;
-  height: 1024px;
-  position: relative;
-  /* Scale down automatically if the screen is smaller than the book */
-  transform: scale(0.7); 
-  transition: transform 0.3s ease;
+#flipbook .page {
+    background-color: white;
+    background-size: 100% 100%;
+    /* Adds a subtle shadow in the center spine of the book */
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.1); 
 }
 
-/* Base Flipbook Styles */
-.flipbook {
-  width: 932px;
-  height: 1024px;
-  position: relative;
-  /* Soft spread shadow underneath the entire book */
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  cursor: pointer;
-}
-
-/* Background image handling for pages */
-.flipbook .page,
-.flipbook-viewport .flipbook > div {
-  width: 466px;
-  height: 1024px;
-  background-color: #fff;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-position: center;
-}
-
-/* Closed Cover Preview & Pop Hover Effect */
-.flipbook-viewport .container:hover {
-  transform: scale(0.72) translateY(-8px);
-}
-
-.flipbook-viewport .container:hover .flipbook {
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
-}
-
-/* Turn.js interaction fixes */
-.turn-page {
-  background-color: #fff;
-}
+/* Map your image files to the pages here */
+#flipbook .page:nth-child(1) { background-image: url('front.jpg'); }
+#flipbook .page:nth-child(2) { background-image: url('page1.jpg'); }
+#flipbook .page:nth-child(3) { background-image: url('page2.jpg'); }
+#flipbook .page:nth-child(4) { background-image: url('page3.jpg'); }
+#flipbook .page:nth-child(5) { background-image: url('page4.jpg'); }
+#flipbook .page:nth-child(6) { background-image: url('back.jpg'); }
