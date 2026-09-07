@@ -20,20 +20,23 @@ $(document).ready(function() {
             width = height * targetRatio;
         }
 
+        var w = Math.round(width);
+        var h = Math.round(height);
+
         if (!$flipbook.data().done) {
             $flipbook.turn({
-                width: Math.round(width),
-                height: Math.round(height),
+                width: w,
+                height: h,
                 display: displayMode,
-                direction: 'rtl', // Right-To-Left page turning for Arabic
+                direction: 'rtl', // Handled strictly in JS to avoid CSS position mirroring
                 autoCenter: true,
-                gradients: false, // Disabled canvas gradients to remove white page overlays
+                gradients: true,
                 elevation: 50
             });
             $flipbook.data().done = true;
         } else {
             $flipbook.turn("display", displayMode);
-            $flipbook.turn("size", Math.round(width), Math.round(height));
+            $flipbook.turn("size", w, h);
         }
     }
 
