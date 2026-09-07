@@ -1,54 +1,58 @@
 $(document).ready(function() {
     var $flipbook = $("#flipbook");
 
-    function getBookSize() {
-        var winWidth = $(window).width();
-        var winHeight = $(window).height();
-        var isMobile = winWidth < 600;
+    function getBookConfig() {
+        var winW = $(window).width();
+        var winH = $(window).height();
 
-        var width, height;
+        // Mobile / narrow screen detection
+        var isMobile = winW < 650;
+        var displayMode = isMobile ? 'single' : 'double';
 
-        if (isMobile) {
-            width = Math.min(winWidth * 0.9, 360);
-            height = width * (1024 / 466);
+        // Precise ratios: 466/1024 for single page, 932/1024 for double spread
+        var targetRatio = isMobile ? (466 / 1024) : (932 / 1024);
 
-            if (height > winHeight * 0.9) {
-                height = winHeight * 0.9;
-                width = height * (466 / 1024);
-            }
-        } else {
-            width = Math.min(winWidth, 700);
-            height = width * (1024 / 932);
+        var maxW = winW * 0.95;
+        var maxH = winH * 0.95;
 
-            if (height > winHeight) {
-                height = winHeight;
-                width = height * (932 / 1024);
-            }
+        var width = maxW;
+        var height = width / targetRatio;
+
+        // Scale down proportionately if height exceeds viewport
+        if (height > maxH) {
+            height = maxH;
+            width = height * targetRatio;
         }
 
         return {
             width: Math.round(width),
             height: Math.round(height),
-            display: isMobile ? 'single' : 'double'
+            display: displayMode
         };
     }
 
-    var initialSize = getBookSize();
+    function applyLayout() {
+        var config = getBookConfig();
 
-    $flipbook.turn({
-        width: initialSize.width,
-        height: initialSize.height,
-        display: initialSize.display,
-        autoCenter: false, // Disabled so page boundaries fit tightly
-        gradients: true,
-        elevation: 50
-    });
+        if (!$flipbook.data().done) {
+            $flipbook.turn({
+                width: config.width,
+                height: config.height,
+                display: config.display,
+                autoCenter: true, // Centers page 1 horizontally
+                gradients: true,
+                elevation: 50
+            });
+            $flipbook.data().done = true;
+        } else {
+            $flipbook.turn("display", config.display);
+            $flipbook.turn("size", config.width, config.height);
+        }
+    }
+
+    applyLayout();
 
     $(window).on("resize", function() {
-        var size = getBookSize();
-        if ($flipbook.turn("is")) {
-            $flipbook.turn("display", size.display);
-            $flipbook.turn("size", size.width, size.height);
-        }
+        applyLayout();
     });
 });
