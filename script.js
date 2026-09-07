@@ -28,10 +28,10 @@ $(document).ready(function() {
                 width: w,
                 height: h,
                 display: displayMode,
-                direction: 'rtl', // Native turn.js Arabic flipping
+                page: 6,           // Forces the book to open directly on front.jpg
                 autoCenter: true,
-                gradients: false, // Disables shadow gradient overlays
-                elevation: 0      // Removes 3D peel shadows
+                gradients: false,  // Disables page flip shadows
+                elevation: 0       // Disables 3D shadow depth
             });
             $flipbook.data().done = true;
         } else {
