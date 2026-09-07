@@ -3,24 +3,40 @@ body {
   background-color: #f2f2f2;
   margin: 0;
   padding: 0;
+  font-family: sans-serif;
 }
 
+/* Centered Viewport */
 .flipbook-viewport {
   overflow: hidden;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.flipbook-viewport .container,
-.flipbook-viewport .flipbook {
+.flipbook-viewport .container {
   width: 932px;
   height: 1024px;
+  position: relative;
+  /* Scale down automatically if the screen is smaller than the book */
+  transform: scale(0.7); 
+  transition: transform 0.3s ease;
 }
 
-/* Ensures turn.js dynamically created page wrappers render properly */
+/* Base Flipbook Styles */
+.flipbook {
+  width: 932px;
+  height: 1024px;
+  position: relative;
+  /* Soft spread shadow underneath the entire book */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+/* Background image handling for pages */
 .flipbook .page,
 .flipbook-viewport .flipbook > div {
   width: 466px;
@@ -31,6 +47,16 @@ body {
   background-position: center;
 }
 
-.flipbook .shadow {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+/* Closed Cover Preview & Pop Hover Effect */
+.flipbook-viewport .container:hover {
+  transform: scale(0.72) translateY(-8px);
+}
+
+.flipbook-viewport .container:hover .flipbook {
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+}
+
+/* Turn.js interaction fixes */
+.turn-page {
+  background-color: #fff;
 }
