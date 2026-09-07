@@ -5,9 +5,11 @@ $(document).ready(function() {
         var winW = $(window).width();
         var winH = $(window).height();
 
+        // Mobile / narrow screen detection
         var isMobile = winW < 650;
         var displayMode = isMobile ? 'single' : 'double';
 
+        // Precise ratios: 466/1024 for single page, 932/1024 for double spread
         var targetRatio = isMobile ? (466 / 1024) : (932 / 1024);
 
         var maxW = winW * 0.95;
@@ -16,6 +18,7 @@ $(document).ready(function() {
         var width = maxW;
         var height = width / targetRatio;
 
+        // Scale down proportionately if height exceeds viewport
         if (height > maxH) {
             height = maxH;
             width = height * targetRatio;
@@ -36,9 +39,9 @@ $(document).ready(function() {
                 width: config.width,
                 height: config.height,
                 display: config.display,
-                autoCenter: true,
-                gradients: false, // Disables shadow overlays during flip
-                elevation: 0      // Disables 3D shadow depth
+                autoCenter: true, // Centers page 1 horizontally
+                gradients: true,
+                elevation: 50
             });
             $flipbook.data().done = true;
         } else {
